@@ -4,9 +4,9 @@
         "version": "PTDL_v1",
         "update_url": null
     },
-    "exported_at": "2021-01-09T21:32:55-08:00",
-    "name": "SCP:SL Exiled egg",
-    "author": "info@goover.de",
+    "exported_at": "2021-01-09T21:58:20-08:00",
+    "name": "EXILED SCP:SL Egg",
+    "author": "Parkeymon#0001",
     "description": "Egg for SCP: Secret Laboratory Dedicated Linux Server",
     "features": null,
     "images": [
@@ -21,7 +21,7 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/bash\r\n# steamcmd Base Installation Script\r\n#\r\n# Server Files: \/mnt\/server\r\n# Image to install with is 'debian:buster-slim'\r\napt -y update\r\napt -y --no-install-recommends install curl lib32gcc1 ca-certificates\r\napt-get update\r\napt-get -y install libicu63\r\napt-get update\r\napt-get -y install wget\r\napt-get update\r\napt-get -y install libsdl2-2.0-0:i386\r\n\r\n\r\n## download and install steamcmd\r\ncd \/tmp\r\nmkdir -p \/mnt\/server\/steamcmd\r\ncurl -sSL -o steamcmd.tar.gz https:\/\/steamcdn-a.akamaihd.net\/client\/installer\/steamcmd_linux.tar.gz\r\ntar -xzvf steamcmd.tar.gz -C \/mnt\/server\/steamcmd\r\ncd \/mnt\/server\/steamcmd\r\n\r\n# SteamCMD fails otherwise for some reason, even running as root.\r\n# This is changed at the end of the install process anyways.\r\nchown -R root:root \/mnt\r\nexport HOME=\/mnt\/server\r\n\r\nif [ \"${BETA_TAG}\" == \"none\" ]; then\r\n    .\/steamcmd.sh +login anonymous +force_install_dir \/mnt\/server +app_update ${SRCDS_APPID} validate +quit\r\nelse\r\n    .\/steamcmd.sh +login anonymous +force_install_dir \/mnt\/server +app_update ${SRCDS_APPID} ${BETA_TAG} validate +quit\r\nfi\r\n## install game using steamcmd\r\n\r\n## set up 32 bit libraries\r\nmkdir -p \/mnt\/server\/.steam\/sdk32\r\ncp -v linux32\/steamclient.so ..\/.steam\/sdk32\/steamclient.so\r\n\r\n## set up 64 bit libraries\r\nmkdir -p \/mnt\/server\/.steam\/sdk64\r\ncp -v linux64\/steamclient.so ..\/.steam\/sdk64\/steamclient.so\r\n\r\ncd \/mnt\/server\r\n\r\necho \"Installing MultiAdmin..\"\r\nrm MultiAdmin.exe\r\nwget https:\/\/github.com\/ServerMod\/MultiAdmin\/releases\/download\/3.3.1.1-alpha\/MultiAdmin.exe\r\n\r\necho \"Configure scp_multiadmin.cfg\"\r\nrm scp_multiadmin.cfg\r\ntouch \"scp_multiadmin.cfg\"\r\necho \"use_new_input_system: false\" > scp_multiadmin.cfg\r\necho \"Configure scp_multiadmin.cfg done.\"\r\n\r\necho \"Configure start.sh\"\r\nrm start.sh\r\ntouch \"start.sh\"\r\nchmod +x .\/start.sh\r\nif [ \"${INSTALL_BOT}\" == \"true\" ]; then\r\n    echo \"#!\/bin\/bash\r\n    mono Bot\/DiscordIntegration_Bot.exe > \/dev\/null &\r\n    mono MultiAdmin.exe --port \\$1\" >> start.sh\r\n    echo \"Configure start.sh done\"\r\nelse\r\n    echo \"#!\/bin\/bash\r\n    mono MultiAdmin.exe --port \\$1\" >> start.sh\r\n    echo \"Configure start.sh done\"\r\nfi\r\n\r\nif [ \"${INSTALL_BOT}\" == \"true\" ]; then\r\n    echo \"Installing Discord Integration Version: ${BOT_VERSION}..\"\r\n    wget https:\/\/github.com\/galaxy119\/DiscordIntegration\/releases\/download\/${BOT_VERSION}\/Bot.tar.gz\r\n    rm -r Bot\r\n    tar xzvf Bot.tar.gz\r\n    rm Bot.tar.gz\r\n    chmod +x Bot\/DiscordIntegration_Bot.exe\r\nelse\r\n    echo \"Installing bot canceled.\"\r\n\r\nfi\r\n\r\nif [ \"${INSTALL_EXILED}\" == \"true\" ]; then\r\n    echo \"Downloading EXILED..\"\r\n    mkdir .config\/\r\n    wget https:\/\/github.com\/galaxy119\/EXILED\/releases\/download\/2.1.28\/Exiled.Installer-Linux\r\n    echo \"Installing EXILED..\"\r\n    chmod +x .\/Exiled.Installer-Linux\r\n    .\/Exiled.Installer-Linux --pre-releases\r\n    rm Exiled.Installer-Linux\r\nelse\r\n    echo \"Installing exiled canceled.\"\r\n    \r\nfi",
+            "script": "#!\/bin\/bash\r\n# steamcmd Base Installation Script\r\n#\r\n# Server Files: \/mnt\/server\r\n# Image to install with is 'debian:buster-slim'\r\napt -y update\r\napt -y --no-install-recommends install curl lib32gcc1 ca-certificates\r\napt-get update\r\napt-get -y install libicu63\r\napt-get update\r\napt-get -y install wget\r\napt-get update\r\napt-get -y install libsdl2-2.0-0:i386\r\n\r\n\r\n## download and install steamcmd\r\ncd \/tmp\r\nmkdir -p \/mnt\/server\/steamcmd\r\ncurl -sSL -o steamcmd.tar.gz https:\/\/steamcdn-a.akamaihd.net\/client\/installer\/steamcmd_linux.tar.gz\r\ntar -xzvf steamcmd.tar.gz -C \/mnt\/server\/steamcmd\r\ncd \/mnt\/server\/steamcmd\r\n\r\n# SteamCMD fails otherwise for some reason, even running as root.\r\n# This is changed at the end of the install process anyways.\r\nchown -R root:root \/mnt\r\nexport HOME=\/mnt\/server\r\n\r\nif [ \"${BETA_TAG}\" == \"none\" ]; then\r\n    .\/steamcmd.sh +login anonymous +force_install_dir \/mnt\/server +app_update ${SRCDS_APPID} validate +quit\r\nelse\r\n    .\/steamcmd.sh +login anonymous +force_install_dir \/mnt\/server +app_update ${SRCDS_APPID} ${BETA_TAG} validate +quit\r\nfi\r\n## install game using steamcmd\r\n\r\n## set up 32 bit libraries\r\nmkdir -p \/mnt\/server\/.steam\/sdk32\r\ncp -v linux32\/steamclient.so ..\/.steam\/sdk32\/steamclient.so\r\n\r\n## set up 64 bit libraries\r\nmkdir -p \/mnt\/server\/.steam\/sdk64\r\ncp -v linux64\/steamclient.so ..\/.steam\/sdk64\/steamclient.so\r\n\r\ncd \/mnt\/server\r\n\r\necho \"Installing MultiAdmin..\"\r\nrm MultiAdmin.exe\r\nwget https:\/\/github.com\/ServerMod\/MultiAdmin\/releases\/download\/3.3.1.1-alpha\/MultiAdmin.exe\r\n\r\necho \"Configure scp_multiadmin.cfg\"\r\nrm scp_multiadmin.cfg\r\ntouch \"scp_multiadmin.cfg\"\r\necho \"use_new_input_system: false\" > scp_multiadmin.cfg\r\necho \"Configure scp_multiadmin.cfg done.\"\r\n\r\necho \"Configure start.sh\"\r\nrm start.sh\r\ntouch \"start.sh\"\r\nchmod +x .\/start.sh\r\nif [ \"${INSTALL_BOT}\" == \"true\" ]; then\r\n    echo \"#!\/bin\/bash\r\n    mono Bot\/DiscordIntegration_Bot.exe\r\n    mono MultiAdmin.exe --port \\$1\" >> start.sh\r\n    echo \"Configure start.sh done\"\r\nelse\r\n    echo \"#!\/bin\/bash\r\n    mono MultiAdmin.exe --port \\$1\" >> start.sh\r\n    echo \"Configure start.sh done\"\r\nfi\r\n\r\nif [ \"${INSTALL_BOT}\" == \"true\" ]; then\r\n    echo \"Installing Discord Integration Version: ${BOT_VERSION}..\"\r\n    wget https:\/\/github.com\/galaxy119\/DiscordIntegration\/releases\/download\/${BOT_VERSION}\/Bot.tar.gz\r\n    rm -r Bot\r\n    tar xzvf Bot.tar.gz\r\n    rm Bot.tar.gz\r\n    chmod +x Bot\/DiscordIntegration_Bot.exe\r\nelse\r\n    echo \"Installing bot canceled.\"\r\n\r\nfi\r\n\r\nif [ \"${INSTALL_EXILED}\" == \"true\" ]; then\r\n    echo \"Downloading EXILED..\"\r\n    mkdir .config\/\r\n    wget https:\/\/github.com\/galaxy119\/EXILED\/releases\/download\/2.1.28\/Exiled.Installer-Linux\r\n    echo \"Installing EXILED..\"\r\n    chmod +x .\/Exiled.Installer-Linux\r\n    .\/Exiled.Installer-Linux --pre-releases\r\n    rm Exiled.Installer-Linux\r\nelse\r\n    echo \"Installing exiled canceled.\"\r\n    \r\nfi\r\nif [ \"${INSTALL_BOT}\" == \"true\" ]; then\r\n    echo !!Dont forget to configure the discord bot in \"\/Bot\/IntegrationBotConfig.json\"!!\r\nelse\r\n    echo !!Installation complete.!!\r\nfi",
             "container": "debian:buster-slim",
             "entrypoint": "bash"
         }
@@ -37,7 +37,7 @@
             "rules": "required|string|max:20"
         },
         {
-            "name": "Beta tag",
+            "name": "Beta Tag",
             "description": "",
             "env_variable": "BETA_TAG",
             "default_value": "none",
@@ -46,7 +46,7 @@
             "rules": "string|max:20"
         },
         {
-            "name": "Install exiled?",
+            "name": "Install Exiled?",
             "description": "",
             "env_variable": "INSTALL_EXILED",
             "default_value": "true",
@@ -55,7 +55,7 @@
             "rules": "required|string|max:20"
         },
         {
-            "name": "Install bot?",
+            "name": "Install Discord Integration Bot?",
             "description": "",
             "env_variable": "INSTALL_BOT",
             "default_value": "false",
