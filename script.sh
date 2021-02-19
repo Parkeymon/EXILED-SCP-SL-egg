@@ -114,11 +114,11 @@ if [ "${INSTALL_EXILED}" == "true" ]; then
     echo "Downloading EXILED.."
     mkdir .config/
     echo "Downloading latest EXILED Installer"
+    rm Exiled.Installer-Linux
     wget https://github.com/galaxy119/EXILED/releases/latest/download/Exiled.Installer-Linux
     echo "Installing EXILED.."
     chmod +x ./Exiled.Installer-Linux
     ./Exiled.Installer-Linux --pre-releases
-    rm Exiled.Installer-Linux
 else
     echo "Skipping Exiled installation."
 
