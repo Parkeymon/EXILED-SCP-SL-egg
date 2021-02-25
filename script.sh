@@ -124,9 +124,17 @@ else
 
 fi
 
+if [ "${REMOVE_UPDATER}" == "true" ]; then
+    echo "Removing Exiled updater."
+    rm .config/EXILED/Plugins/Exiled.Updater.dll
+else
+    echo "Not removing Exiled updater."
+fi
+
 if [ "${INSTALL_INTEGRATION}" == "true" ]; then
     if [ "${BOT_VERSION}" == "latest" ]; then
         echo Installing Discord Latest Integration Plugin...
+        #Moves to plugin folder for plugin installation. 
         cd .config/EXILED/Plugins
 
         rm DiscordIntegration_Plugin.dll
@@ -146,10 +154,26 @@ if [ "${INSTALL_INTEGRATION}" == "true" ]; then
     fi
 fi
 
+if  [ "${INSTALL_ADMINTOOLS}" == "true" ]; then
+    echo "Removing current Admin Tools"
+    rm AdminTools.dll
+    echo "Installing latest Admin Tools"
+    wget https://github.com/Exiled-Team/AdminTools/releases/latest/download/AdminTools.dll
+else
+    echo "Skipping Admin Tools install."
+fi
+
+if [ "${INSTALL_UTILITIES}" == "true" ]; then
+    echo "Removing existing Common Utilities version."
+    rm Common_Utilities.dll
+    echo "Installing Common Utilities."
+    wget https://github.com/Exiled-Team/Common-Utils/releases/latest/download/Common_Utilities.dll
+fi
+
 if [ "${INSTALL_BOT}" == "true" ]
 then
-    echo "Installation complete. Dont forget to configure the discord bot in IntegrationBotConfig.json"
+    echo "Dont forget to configure the discord bot in IntegrationBotConfig.json"
+    echo "$(tput setaf 2)Installation Complete!$(tput sgr 0)"
 else
-    echo "!!Installation complete!!"
-
+    echo "$(tput setaf 2)Installation Complete!$(tput sgr 0)"
 fi
