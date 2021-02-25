@@ -1,5 +1,17 @@
 # EXILED-SCP-SL-egg
 
-A pterodactyl egg for SCP:SL that installs SL along with EXILED and Discord Integration.
+A pterodactyl egg for SCP:SL that has [EXILED](https://github.com/Exiled-Team/EXILED) support.
 
-Originally made by Killers0992 but now has more features and is updated to work with latest discord integration bot, exiled, and lets you now choose to use multiadmin or localadmin.
+Egg originally made by Killers0992 but is now improved.
+
+Features:
+
+- Beta tag support
+- Exiled
+- Discord integration bot and plugin
+- Selectable bot version
+- Multiadmin 
+- Localadmin 
+- Admintools 
+- Common Utilities
+- Exiled updater auto-removal
