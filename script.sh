@@ -10,6 +10,9 @@ apt-get -y install libicu63
 apt-get update
 apt-get -y install wget
 apt-get update
+echo "$(tput setaf 4)Installing NPM$(tput setaf 0)"
+apt-get -y install npm
+apt-get update
 apt-get -y install libsdl2-2.0-0:i386
 
 
@@ -54,10 +57,10 @@ if [ "${INSTALL_MULTIADMIN}" == "true" ]; then
     echo "use_new_input_system: false" > scp_multiadmin.cfg
     echo "Configure scp_multiadmin.cfg done."
 else
-    echo "Using LocalAdmin."
+    echo "$(tput setaf 4)Using LocalAdmin.$(tput setaf 0)"
 fi
 
-echo "Configuring start.sh"
+echo "$(tput setaf 4)Configuring start.sh$(tput setaf 0)"
 rm start.sh
 touch "start.sh"
 chmod +x ./start.sh
@@ -65,58 +68,71 @@ chmod +x ./start.sh
 if [ "${INSTALL_BOT}" == "true" ] && [ "${INSTALL_MULTIADMIN}" == "false" ] 
 then
     echo "#!/bin/bash
-    mono Bot/DiscordIntegration_Bot.exe > /dev/null &
+    node DiscordIntegrationBot/discordIntegration.js > /dev/null &
     ./LocalAdmin \${SERVER_PORT}" >> start.sh
-    echo "Finished configuring start.sh for LocalAdmin and Discord Integration."
+    echo "$(tput setaf 4)Finished configuring start.sh for LocalAdmin and Discord Integration.$(tput setaf 0)"
 
 elif [ "${INSTALL_BOT}" == "false" ] && [ "${INSTALL_MULTIADMIN}" == "false" ]
 then
 echo "#!/bin/bash
     ./LocalAdmin \${SERVER_PORT}" >> start.sh
-    echo "Finished configuring start.sh for LocalAdmin."
+    echo "$(tput setaf 4)Finished configuring start.sh for LocalAdmin.$(tput setaf 0)"
 
 elif [ "${INSTALL_BOT}" == "true" ] 
 
 then
     echo "#!/bin/bash
-    mono Bot/DiscordIntegration_Bot.exe > /dev/null &
+    node DiscordIntegrationBot/discordIntegration.js > /dev/null &
     mono MultiAdmin.exe --port \${SERVER_PORT}" >> start.sh
-    echo "Finished configuring start.sh for MultiAdmin and Discord Integration."
+    echo "$(tput setaf 4)Finished configuring start.sh for MultiAdmin and Discord Integration.$(tput setaf 0)"
 
 else
     echo "#!/bin/bash
     mono MultiAdmin.exe --port \$1" >> start.sh
-    echo "Finished configuring start.sh for MultiAdmin."
+    echo "$(tput setaf 4)Finished configuring start.sh for MultiAdmin.$(tput setaf 0)"
 fi
 
 if [ "${INSTALL_BOT}" == "true" ]; then
     if [ "${BOT_VERSION}" == "latest" ]; then
-        echo "Installing latest Discord Integration bot version."
-        wget https://github.com/galaxy119/DiscordIntegration/releases/latest/download/Bot.tar.gz
+       
+        echo "$(tput setaf 4)Removing old bot version if it still exists.$(tput setaf 0)"
         rm -r Bot
-        tar xzvf Bot.tar.gz
-        rm Bot.tar.gz
-        chmod +x Bot/DiscordIntegration_Bot.exe
+
+        mkdir DiscordIntegrationBot
+        echo "$(tput setaf 4)Installing latest Discord Integration bot version.$(tput setaf 0)"
+        wget https://github.com/Exiled-Team/DiscordIntegration/releases/latest/download/DiscordIntegration.Bot.tar.gz
+        tar xzvf DiscordIntegration.Bot.tar.gz -C DiscordIntegrationBot/
+        rm DiscordIntegration.Bot.tar.gz
+        
+        echo "$(tput setaf 4)Updating Packages$(tput setaf 0)"
+        #Couldnt find better way to do this dont jundge <3
+        cd DiscordIntegrationBot
+        npm i
+        cd ../
+
     else
         echo "Installing Discord Integration Version: ${BOT_VERSION}.."
-        wget https://github.com/galaxy119/DiscordIntegration/releases/download/${BOT_VERSION}/Bot.tar.gz
+        wget https://github.com/Exiled-Team/DiscordIntegration/releases/download/${BOT_VERSION}/Bot.tar.gz
+        echo "$(tput setaf 4)Removing old bot version if it still exists.$(tput setaf 0)"
         rm -r Bot
-        tar xzvf Bot.tar.gz
-        rm Bot.tar.gz
+        echo "$(tput setaf 4)Removing previous (updated) bot if it exists.$(tput setaf 0)"
+        rm -r DiscordIntegration.Bot
+        tar xzvf DiscordIntegration.Bot.tar.gz
+        rm DiscordIntegration.Bot.tar.gz
         chmod +x Bot/DiscordIntegration_Bot.exe
     fi
 else
-    echo "Skipping bot install..."
+    echo "$(tput setaf 4)Skipping bot install...$(tput setaf 0)"
 
 fi
 
 if [ "${INSTALL_EXILED}" == "true" ]; then
-    echo "Downloading EXILED.."
+    echo "$(tput setaf 4)Downloading $(tput setaf 1)EXILED$(tput setaf 0).."
     mkdir .config/
-    echo "Downloading latest EXILED Installer"
+    echo "$(tput setaf 4)Downloading latest $(tput setaf 1)EXILED$(tput setaf 4) Installer$(tput setaf 0)"
     rm Exiled.Installer-Linux
     wget https://github.com/galaxy119/EXILED/releases/latest/download/Exiled.Installer-Linux
-    echo "Installing EXILED.."
+    echo "$(tput setaf 4)Installing $(tput setaf 1)EXILED$(tput setaf 0).."
     chmod +x ./Exiled.Installer-Linux
     ./Exiled.Installer-Linux --pre-releases
 else
@@ -172,7 +188,7 @@ fi
 
 if [ "${INSTALL_BOT}" == "true" ]
 then
-    echo "Dont forget to configure the discord bot in IntegrationBotConfig.json"
+    echo "Dont forget to configure the discord bot in /home/container/config.yml (not in DiscordIntegrationBot/) after you start the server once."
     echo "$(tput setaf 2)Installation Complete!$(tput sgr 0)"
 else
     echo "$(tput setaf 2)Installation Complete!$(tput sgr 0)"
