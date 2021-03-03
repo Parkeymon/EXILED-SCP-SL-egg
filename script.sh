@@ -153,17 +153,16 @@ if [ "${INSTALL_INTEGRATION}" == "true" ]; then
         #Moves to plugin folder for plugin installation. 
         cd .config/EXILED/Plugins
 
+        echo "Removing old Discord Integreation (if it exists)"
         rm DiscordIntegration_Plugin.dll
-        echo Grabbing plugin.
-        wget https://github.com/galaxy119/DiscordIntegration/releases/latest/download/DiscordIntegration_Plugin.dll
+        rm DiscordIntegration.dll
 
-        rm dependencies.tar.gz
-        echo Grabbing dependencies.
-        wget https://github.com/galaxy119/DiscordIntegration/releases/latest/download/dependencies.tar.gz
+        echo "Grabbing plugin and dependencies."
+        wget https://github.com/Exiled-Team/DiscordIntegration/releases/latest/download/Plugin.tar.gz
 
-        echo Installing dependencies.
-        tar -xvf dependencies.tar.gz
-        rm dependencies.tar.gz
+        echo "Extacting..."
+        tar xzvf Plugin.tar.gz
+        rm Plugin.tar.gz
 
     else
         echo "Installing Discord Integration Plugin Version: ${BOT_VERSION}"
