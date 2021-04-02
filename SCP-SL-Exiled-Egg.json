@@ -74,15 +74,6 @@
             "rules": "required|string|max:20"
         },
         {
-            "name": "Install MultiAdmin?",
-            "description": "Should you install multiadmin or not?",
-            "env_variable": "INSTALL_MULTIADMIN",
-            "default_value": "false",
-            "user_viewable": false,
-            "user_editable": false,
-            "rules": "required|string|max:5"
-        },
-        {
             "name": "Install Discord Integration Plugin?",
             "description": "Intstalls the discord integration plugin.",
             "env_variable": "INSTALL_INTEGRATION",
