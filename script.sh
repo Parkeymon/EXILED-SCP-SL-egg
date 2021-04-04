@@ -183,6 +183,9 @@ if [ "${INSTALL_UTILITIES}" == "true" ]; then
     rm Common_Utilities.dll
     echo "Installing Common Utilities."
     wget https://github.com/Exiled-Team/Common-Utils/releases/latest/download/Common_Utilities.dll
+
+else
+    echo "Skipping Common Utilities Install"
 fi
 
 if [ "${INSTALL_BOT}" == "true" ]
