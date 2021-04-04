@@ -170,10 +170,11 @@ if [ "${INSTALL_INTEGRATION}" == "true" ]; then
 fi
 
 if  [ "${INSTALL_ADMINTOOLS}" == "true" ]; then
-    echo "Removing current Admin Tools"
+    echo "Removing existing Admin Tools version."
     rm AdminTools.dll
     echo "Installing latest Admin Tools"
     wget https://github.com/Exiled-Team/AdminTools/releases/latest/download/AdminTools.dll
+
 else
     echo "Skipping Admin Tools install."
 fi
@@ -183,10 +184,18 @@ if [ "${INSTALL_UTILITIES}" == "true" ]; then
     rm Common_Utilities.dll
     echo "Installing Common Utilities."
     wget https://github.com/Exiled-Team/Common-Utils/releases/latest/download/Common_Utilities.dll
-
 else
     echo "Skipping Common Utilities Install"
 fi
+
+if [ "${INSTALL_SCPSTATS}" == "true" ]; then
+    echo "Removing existing SCPStats version."
+    rm SCPStats.dll
+    echo "Installing SCPStats"
+    wget https://github.com/SCPStats/Plugin/releases/latest/download/SCPStats.dll
+else
+    echo "Skipping SCPStats Install."
+fi    
 
 if [ "${INSTALL_BOT}" == "true" ]
 then
