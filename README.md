@@ -10,7 +10,7 @@ Features:
 - Exiled
 - Discord integration bot and plugin
 - Selectable bot version
-- Multiadmin 
+- Multiadmin (Not reccomended to use, doesnt play very nice with pterodactyl)
 - Localadmin 
 - Admintools 
 - Common Utilities
