@@ -2,21 +2,8 @@
 # steamcmd Base Installation Script
 #
 # Server Files: /mnt/server
-# Image to install with is 'debian:buster-slim'
-apt -y update
-apt -y --no-install-recommends install curl lib32gcc1 ca-certificates
-apt-get update
-apt-get -y install libicu63
-apt-get update
-apt-get -y install wget
-apt-get update
-echo "$(tput setaf 4)Installing NPM$(tput setaf 0)"
-apt-get -y install npm
-apt-get update
-apt-get -y install libsdl2-2.0-0:i386
 
-
-## download and install steamcmd
+# Download SteamCMD and Install
 cd /tmp
 mkdir -p /mnt/server/steamcmd
 curl -sSL -o steamcmd.tar.gz https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
@@ -33,7 +20,7 @@ if [ "${BETA_TAG}" == "none" ]; then
 else
     ./steamcmd.sh +login anonymous +force_install_dir /mnt/server +app_update ${SRCDS_APPID} ${BETA_TAG} validate +quit
 fi
-## install game using steamcmd
+# Install SL with SteamCMD
 
 ## set up 32 bit libraries
 mkdir -p /mnt/server/.steam/sdk32
@@ -144,7 +131,7 @@ if [ "${REMOVE_UPDATER}" == "true" ]; then
     echo "Removing Exiled updater."
     rm .config/EXILED/Plugins/Exiled.Updater.dll
 else
-    echo "Not removing Exiled updater."
+    echo "Skipping EXILED updater removal."
 fi
 
 if [ "${INSTALL_INTEGRATION}" == "true" ]; then
