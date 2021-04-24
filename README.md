@@ -2,8 +2,6 @@
 
 A pterodactyl egg for SCP:SL that has [EXILED](https://github.com/Exiled-Team/EXILED) support.
 
-Egg originally made by Killers0992 but is now improved.
-
 Features:
 
 - Beta tag support
@@ -12,6 +10,9 @@ Features:
 - Selectable bot version
 - Multiadmin (Not reccomended to use, doesnt play very nice with pterodactyl)
 - Localadmin 
-- Admintools 
-- Common Utilities
+- Auto Admintools install 
+- Auto Common Utilities install.
+- Auto SCPStats install. 
 - Exiled updater auto-removal
+
+If you send a PR that only updates the [install script](https://github.com/Parkeymon/EXILED-SCP-SL-egg/blob/master/script.sh) don't send the exported egg just send the updated script.sh I will add it unless you need to make variable changes in the egg.
