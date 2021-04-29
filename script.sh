@@ -3,6 +3,25 @@
 #
 # Server Files: /mnt/server
 
+echo "
+$(tput setaf 4)  ____________________________       ______________     
+$(tput setaf 4) /   _____/\_   ___ \______   \ /\  /   _____/|    |    
+$(tput setaf 4) \_____  \ /    \  \/|     ___/ \/  \_____  \ |    |    
+$(tput setaf 4) /        ||     \___|    |     /\  /        \|    |___ 
+$(tput setaf 4)/_________/ \________/____|     \/ /_________/|________|
+$(tput setaf 1) ___                 __          __   __                
+$(tput setaf 1)|   | ____   _______/  |______  |  | |  |   ___________ 
+$(tput setaf 1)|   |/    \ /  ___/\   __\__  \ |  | |  | _/ __ \_  __ |
+$(tput setaf 1)|   |   |  |\___ \  |  |  / __ \|  |_|  |_\  ___/|  | \/
+$(tput setaf 1)|___|___|__/______> |__| (______|____|____/\___  |__|       
+$(tput setaf 0)
+"
+echo "
+$(tput setaf 2)This installer was created by $(tput setaf 1)Parkeymon#0001
+$(tput setaf 2)You can find the latest version here: https://github.com/Parkeymon/EXILED-SCP-SL-egg
+$(tput setaf 0)
+"
+
 # Download SteamCMD and Install
 cd /tmp
 mkdir -p /mnt/server/steamcmd
