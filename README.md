@@ -8,7 +8,7 @@ Features:
 - Exiled
 - Discord integration bot and plugin
 - Selectable bot version
-- Multiadmin (Not reccomended to use, doesnt play very nice with pterodactyl)
+- Multiadmin (Not recommended to use, doesnt play very nice with pterodactyl)
 - Localadmin 
 - Auto Admintools install 
 - Auto Common Utilities install.
