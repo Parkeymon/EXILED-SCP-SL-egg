@@ -74,7 +74,7 @@ chmod +x ./start.sh
 if [ "${INSTALL_BOT}" == "true" ] && [ "${INSTALL_MULTIADMIN}" == "false" ] 
 then
     echo "#!/bin/bash
-    node DiscordIntegrationBot/discordIntegration.js > /dev/null &
+    node discordIntegration.js > /dev/null &
     ./LocalAdmin \${SERVER_PORT}" >> start.sh
     echo "$(tput setaf 4)Finished configuring start.sh for LocalAdmin and Discord Integration.$(tput setaf 0)"
 
@@ -88,7 +88,7 @@ elif [ "${INSTALL_BOT}" == "true" ]
 
 then
     echo "#!/bin/bash
-    node DiscordIntegrationBot/discordIntegration.js > /dev/null &
+    node discordIntegration.js > /dev/null &
     mono MultiAdmin.exe --port \${SERVER_PORT}" >> start.sh
     echo "$(tput setaf 4)Finished configuring start.sh for MultiAdmin and Discord Integration.$(tput setaf 0)"
 
@@ -100,32 +100,93 @@ fi
 
 if [ "${INSTALL_BOT}" == "true" ]; then
     if [ "${BOT_VERSION}" == "latest" ]; then
-       
-        echo "$(tput setaf 4)Removing old bot version if it still exists.$(tput setaf 0)"
-        rm -r Bot
+       if [ "${CONFIG_SAVER}" == "true" ]; then
+            # Latest Bot WITH config saver
 
-        mkdir DiscordIntegrationBot
-        echo "$(tput setaf 4)Installing latest Discord Integration bot version.$(tput setaf 0)"
-        wget https://github.com/Exiled-Team/DiscordIntegration/releases/latest/download/DiscordIntegration.Bot.tar.gz
-        tar xzvf DiscordIntegration.Bot.tar.gz -C DiscordIntegrationBot/
-        rm DiscordIntegration.Bot.tar.gz
+            echo "$(tput setaf 4)Removing old bot version if it still exists.$(tput setaf 0)"
+            rm -r Bot
+
+            #Config SAVER
+            echo "$(tput setaf 4)Config Saver is $(tput setaf 2)ENABLED"
+            echo "Making temporary directory"
+            mkdir BotConfigTemp
+            echo "Moving config."
+            mv config.yml ./BotConfigTemp
+
+            echo "$(tput setaf 4)Installing latest Discord Integration bot version.$(tput setaf 0)"
+            wget https://github.com/Exiled-Team/DiscordIntegration/releases/latest/download/DiscordIntegration.Bot.tar.gz
+            tar xzvf DiscordIntegration.Bot.tar.gz
+            rm DiscordIntegration.Bot.tar.gz
+            echo "Deleting config"
+            rm config.yml
+            echo "Replacing Config"
+            mv ./BotConfigTemp/config.yml ./
+            echo "Removing temporary directory"
+            rm -r BotConfigTemp
+            echo "$(tput setaf 4)Your configs have been saved!"
         
-        echo "$(tput setaf 4)Updating Packages$(tput setaf 0)"
-        #Couldnt find better way to do this dont jundge <3
-        cd DiscordIntegrationBot
-        npm i
-        cd ../
+            echo "$(tput setaf 4)Updating Packages$(tput setaf 0)"
+            #Couldnt find better way to do this dont jundge <3
+            npm i
 
+        else
+            # Latest Bot WITHOUT config saver
+
+            echo "$(tput setaf 4)Removing old bot version if it still exists.$(tput setaf 0)"
+            rm -r Bot
+
+            echo "$(tput setaf 4)Installing latest Discord Integration bot version.$(tput setaf 0)"
+            wget https://github.com/Exiled-Team/DiscordIntegration/releases/latest/download/DiscordIntegration.Bot.tar.gz
+            tar xzvf DiscordIntegration.Bot.tar.gz
+            rm DiscordIntegration.Bot.tar.gz
+        
+            echo "$(tput setaf 4)Updating Packages$(tput setaf 0)"
+            #Couldnt find better way to do this dont jundge <3
+            npm i
+        fi
     else
-        echo "Installing Discord Integration Version: ${BOT_VERSION}.."
-        wget https://github.com/Exiled-Team/DiscordIntegration/releases/download/${BOT_VERSION}/Bot.tar.gz
-        echo "$(tput setaf 4)Removing old bot version if it still exists.$(tput setaf 0)"
-        rm -r Bot
-        echo "$(tput setaf 4)Removing previous (updated) bot if it exists.$(tput setaf 0)"
-        rm -r DiscordIntegration.Bot
-        tar xzvf DiscordIntegration.Bot.tar.gz
-        rm DiscordIntegration.Bot.tar.gz
-        chmod +x Bot/DiscordIntegration_Bot.exe
+        if [ "${CONFIG_SAVER}" == "true" ]; then
+            # Specific Version WITH config saver
+
+            echo "$(tput setaf 4)Removing old bot version if it still exists.$(tput setaf 0)"
+            rm -r Bot
+
+            #Config SAVER
+            echo "$(tput setaf 4)Config Saver is $(tput setaf 2)ENABLED"
+            echo "Making temporary directory"
+            mkdir BotConfigTemp
+            echo "Moving config."
+            mv config.yml ./BotConfigTemp
+
+            echo "$(tput setaf 4)Installing Discord Integration bot version: ${BOT_VERSION}..."
+            wget https://github.com/Exiled-Team/DiscordIntegration/releases/download/${BOT_VERSION}/Bot.tar.gz
+            tar xzvf DiscordIntegration.Bot.tar.gz
+            rm DiscordIntegration.Bot.tar.gz
+            echo "Deleting config"
+            rm config.yml
+            echo "Replacing Config"
+            mv ./BotConfigTemp/config.yml ./
+            echo "Removing temporary directory"
+            rm -r BotConfigTemp
+            echo "$(tput setaf 4)Your configs have been saved!"
+
+            echo "$(tput setaf 4)Updating Packages$(tput setaf 0)"
+            npm i
+
+        else
+            # Specific Version WITHOUT config saver
+
+            echo "$(tput setaf 4)Removing old bot version if it still exists.$(tput setaf 0)"
+            rm -r Bot
+
+            echo "$(tput setaf 4)Installing Discord Integration bot version: ${BOT_VERSION}..."
+            wget https://github.com/Exiled-Team/DiscordIntegration/releases/download/${BOT_VERSION}/Bot.tar.gz
+            tar xzvf DiscordIntegration.Bot.tar.gz
+            rm DiscordIntegration.Bot.tar.gz
+        
+            echo "$(tput setaf 4)Updating Packages$(tput setaf 0)"
+            npm i
+        fi
     fi
 else
     echo "$(tput setaf 4)Skipping bot install...$(tput setaf 0)"
@@ -139,7 +200,7 @@ if [ "${INSTALL_EXILED}" == "true" ]; then
         echo "$(tput setaf 4)Downloading latest $(tput setaf 1)EXILED$(tput setaf 4) Installer$(tput setaf 0)"
         rm Exiled.Installer-Linux
         wget https://github.com/galaxy119/EXILED/releases/latest/download/Exiled.Installer-Linux
-        echo "$(tput setaf 4)Installing $(tput setaf 1)EXILED$(tput setaf 0).."
+        echo "$(tput setaf 4)Installing $(tput setaf 1)EXILED (pre-release)$(tput setaf 0).."
         chmod +x ./Exiled.Installer-Linux
         ./Exiled.Installer-Linux --pre-releases
     else
@@ -148,7 +209,7 @@ if [ "${INSTALL_EXILED}" == "true" ]; then
         echo "$(tput setaf 4)Downloading latest $(tput setaf 1)EXILED$(tput setaf 4) Installer$(tput setaf 0)"
         rm Exiled.Installer-Linux
         wget https://github.com/galaxy119/EXILED/releases/latest/download/Exiled.Installer-Linux
-        echo "$(tput setaf 4)Installing $(tput setaf 1)EXILED pre-release$(tput setaf 0).."
+        echo "$(tput setaf 4)Installing $(tput setaf 1)EXILED$(tput setaf 0).."
         chmod +x ./Exiled.Installer-Linux
         ./Exiled.Installer-Linux      
     fi
@@ -216,7 +277,7 @@ fi
 
 if [ "${INSTALL_BOT}" == "true" ]
 then
-    echo "Dont forget to configure the discord bot in /home/container/config.yml (not in DiscordIntegrationBot/) after you start the server once."
+    echo "Dont forget to configure the discord bot in /home/container/config.yml"
     echo "$(tput setaf 2)Installation Complete!$(tput sgr 0)"
 else
     echo "$(tput setaf 2)Installation Complete!$(tput sgr 0)"
