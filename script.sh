@@ -203,7 +203,8 @@ if [ "${INSTALL_EXILED}" == "true" ]; then
         echo "$(tput setaf 4)Installing $(tput setaf 1)EXILED (pre-release)$(tput setaf 0).."
         chmod +x ./Exiled.Installer-Linux
         ./Exiled.Installer-Linux --pre-releases
-    else
+
+    else if [ "${EXILED_PRE}" == "false" ]; then
         echo "$(tput setaf 4)Downloading $(tput setaf 1)EXILED$(tput setaf 0).."
         mkdir .config/
         echo "$(tput setaf 4)Downloading latest $(tput setaf 1)EXILED$(tput setaf 4) Installer$(tput setaf 0)"
@@ -211,7 +212,17 @@ if [ "${INSTALL_EXILED}" == "true" ]; then
         wget https://github.com/galaxy119/EXILED/releases/latest/download/Exiled.Installer-Linux
         echo "$(tput setaf 4)Installing $(tput setaf 1)EXILED$(tput setaf 0).."
         chmod +x ./Exiled.Installer-Linux
-        ./Exiled.Installer-Linux      
+        ./Exiled.Installer-Linux
+    else
+        #Installing with specific version.
+        echo "$(tput setaf 4)Downloading $(tput setaf 1)EXILED$(tput setaf 0).."
+        mkdir .config/
+        echo "$(tput setaf 4)Downloading latest $(tput setaf 1)EXILED$(tput setaf 4) Installer$(tput setaf 0)"
+        rm Exiled.Installer-Linux
+        wget https://github.com/galaxy119/EXILED/releases/latest/download/Exiled.Installer-Linux
+        echo "$(tput setaf 4)Installing $(tput setaf 1)EXILED$(tput setaf 0).."
+        chmod +x ./Exiled.Installer-Linux
+        ./Exiled.Installer-Linux --target-version ${EXILED_PRE}
     fi
 else
     echo "Skipping Exiled installation."
