@@ -56,7 +56,10 @@ cp -v linux32/steamclient.so ../.steam/sdk32/steamclient.so
 mkdir -p /mnt/server/.steam/sdk64
 cp -v linux64/steamclient.so ../.steam/sdk64/steamclient.so
 
-cd /mnt/server || echo
+cd /mnt/server || {
+  echo "$(tput setaf 1) FAILED TO MOUNT TO /mnt/server"
+  exit
+}
 
 if [ "${INSTALL_MULTIADMIN}" == "true" ]; then 
     echo "Installing MultiAdmin.."
