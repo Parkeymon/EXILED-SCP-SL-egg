@@ -127,7 +127,7 @@ if [ "${INSTALL_BOT}" == "true" ]; then
         
             echo "$(tput setaf 4)Updating Packages$(tput setaf 0)"
             #Couldnt find better way to do this dont jundge <3
-            npm i
+            yarn install
 
         else
             # Latest Bot WITHOUT config saver
@@ -142,7 +142,7 @@ if [ "${INSTALL_BOT}" == "true" ]; then
         
             echo "$(tput setaf 4)Updating Packages$(tput setaf 0)"
             #Couldnt find better way to do this dont jundge <3
-            npm i
+            yarn install
         fi
     else
         if [ "${CONFIG_SAVER}" == "true" ]; then
@@ -171,7 +171,7 @@ if [ "${INSTALL_BOT}" == "true" ]; then
             echo "$(tput setaf 4)Your configs have been saved!"
 
             echo "$(tput setaf 4)Updating Packages$(tput setaf 0)"
-            npm i
+            yarn install
 
         else
             # Specific Version WITHOUT config saver
@@ -185,7 +185,7 @@ if [ "${INSTALL_BOT}" == "true" ]; then
             rm DiscordIntegration.Bot.tar.gz
         
             echo "$(tput setaf 4)Updating Packages$(tput setaf 0)"
-            npm i
+            yarn install
         fi
     fi
 else
@@ -226,7 +226,6 @@ if [ "${INSTALL_EXILED}" == "true" ]; then
     fi
 else
     echo "Skipping Exiled installation."
-
 fi
 
 if [ "${REMOVE_UPDATER}" == "true" ]; then
