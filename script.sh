@@ -134,7 +134,7 @@ if [ "${INSTALL_BOT}" == "true" ]; then
         
             echo "$(tput setaf 4)Updating Packages$(tput setaf 0)"
 
-            yarn install
+            npm i
 
         else
             # Latest Bot WITHOUT config saver
@@ -149,7 +149,7 @@ if [ "${INSTALL_BOT}" == "true" ]; then
         
             echo "$(tput setaf 4)Updating Packages$(tput setaf 0)"
 
-            yarn install
+            npm i
         fi
     else
         if [ "${CONFIG_SAVER}" == "true" ]; then
@@ -178,7 +178,7 @@ if [ "${INSTALL_BOT}" == "true" ]; then
             echo "$(tput setaf 4)Your configs have been saved!"
 
             echo "$(tput setaf 4)Updating Packages$(tput setaf 0)"
-            yarn install
+            npm i
 
         else
             # Specific Version WITHOUT config saver
@@ -192,7 +192,7 @@ if [ "${INSTALL_BOT}" == "true" ]; then
             rm DiscordIntegration.Bot.tar.gz
         
             echo "$(tput setaf 4)Updating Packages$(tput setaf 0)"
-            yarn install
+            npm i
         fi
     fi
 else
