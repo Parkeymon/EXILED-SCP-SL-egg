@@ -16,6 +16,7 @@ $(tput setaf 1)|   |   |  |\___ \  |  |  / __ \|  |_|  |_\  ___/|  | \/
 $(tput setaf 1)|___|___|__/______> |__| (______|____|____/\___  |__|       
 $(tput setaf 0)
 "
+
 echo "
 $(tput setaf 2)This installer was created by $(tput setaf 1)Parkeymon#0001
 $(tput setaf 2)You can find the latest version here: https://github.com/Parkeymon/EXILED-SCP-SL-egg
@@ -23,11 +24,11 @@ $(tput setaf 0)
 "
 
 # Download SteamCMD and Install
-cd /tmp
+cd /tmp || echo "$(tput setaf 1) FAILED TO MOUNT TO /TMP" && exit
 mkdir -p /mnt/server/steamcmd
 curl -sSL -o steamcmd.tar.gz https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
 tar -xzvf steamcmd.tar.gz -C /mnt/server/steamcmd
-cd /mnt/server/steamcmd
+cd /mnt/server/steamcmd || echo "$(tput setaf 1) FAILED TO MOUNT TO /mnt/server/steamcmd" && exit
 
 # SteamCMD fails otherwise for some reason, even running as root.
 # This is changed at the end of the install process anyways.
@@ -35,9 +36,9 @@ chown -R root:root /mnt
 export HOME=/mnt/server
 
 if [ "${BETA_TAG}" == "none" ]; then
-    ./steamcmd.sh +login anonymous +force_install_dir /mnt/server +app_update ${SRCDS_APPID} validate +quit
+    ./steamcmd.sh +login anonymous +force_install_dir /mnt/server +app_update "${SRCDS_APPID}" validate +quit
 else
-    ./steamcmd.sh +login anonymous +force_install_dir /mnt/server +app_update ${SRCDS_APPID} ${BETA_TAG} validate +quit
+    ./steamcmd.sh +login anonymous +force_install_dir /mnt/server +app_update "${SRCDS_APPID}" "${BETA_TAG}" validate +quit
 fi
 # Install SL with SteamCMD
 
@@ -49,7 +50,7 @@ cp -v linux32/steamclient.so ../.steam/sdk32/steamclient.so
 mkdir -p /mnt/server/.steam/sdk64
 cp -v linux64/steamclient.so ../.steam/sdk64/steamclient.so
 
-cd /mnt/server
+cd /mnt/server || echo
 
 if [ "${INSTALL_MULTIADMIN}" == "true" ]; then 
     echo "Installing MultiAdmin.."
@@ -126,7 +127,7 @@ if [ "${INSTALL_BOT}" == "true" ]; then
             echo "$(tput setaf 4)Your configs have been saved!"
         
             echo "$(tput setaf 4)Updating Packages$(tput setaf 0)"
-            #Couldnt find better way to do this dont jundge <3
+
             yarn install
 
         else
@@ -141,7 +142,7 @@ if [ "${INSTALL_BOT}" == "true" ]; then
             rm DiscordIntegration.Bot.tar.gz
         
             echo "$(tput setaf 4)Updating Packages$(tput setaf 0)"
-            #Couldnt find better way to do this dont jundge <3
+
             yarn install
         fi
     else
@@ -159,7 +160,7 @@ if [ "${INSTALL_BOT}" == "true" ]; then
             mv config.yml ./BotConfigTemp
 
             echo "$(tput setaf 4)Installing Discord Integration bot version: ${BOT_VERSION}..."
-            wget https://github.com/Exiled-Team/DiscordIntegration/releases/download/${BOT_VERSION}/Bot.tar.gz
+            wget https://github.com/Exiled-Team/DiscordIntegration/releases/download/"${BOT_VERSION}"/Bot.tar.gz
             tar xzvf DiscordIntegration.Bot.tar.gz
             rm DiscordIntegration.Bot.tar.gz
             echo "Deleting config"
@@ -180,7 +181,7 @@ if [ "${INSTALL_BOT}" == "true" ]; then
             rm -r Bot
 
             echo "$(tput setaf 4)Installing Discord Integration bot version: ${BOT_VERSION}..."
-            wget https://github.com/Exiled-Team/DiscordIntegration/releases/download/${BOT_VERSION}/Bot.tar.gz
+            wget https://github.com/Exiled-Team/DiscordIntegration/releases/download/"${BOT_VERSION}"/Bot.tar.gz
             tar xzvf DiscordIntegration.Bot.tar.gz
             rm DiscordIntegration.Bot.tar.gz
         
@@ -204,7 +205,7 @@ if [ "${INSTALL_EXILED}" == "true" ]; then
         chmod +x ./Exiled.Installer-Linux
         ./Exiled.Installer-Linux --pre-releases
 
-    else if [ "${EXILED_PRE}" == "false" ]; then
+    elif [ "${EXILED_PRE}" == "false" ]; then
         echo "$(tput setaf 4)Downloading $(tput setaf 1)EXILED$(tput setaf 0).."
         mkdir .config/
         echo "$(tput setaf 4)Downloading latest $(tput setaf 1)EXILED$(tput setaf 4) Installer$(tput setaf 0)"
@@ -222,7 +223,7 @@ if [ "${INSTALL_EXILED}" == "true" ]; then
         wget https://github.com/galaxy119/EXILED/releases/latest/download/Exiled.Installer-Linux
         echo "$(tput setaf 4)Installing $(tput setaf 1)EXILED$(tput setaf 0).."
         chmod +x ./Exiled.Installer-Linux
-        ./Exiled.Installer-Linux --target-version ${EXILED_PRE}
+        ./Exiled.Installer-Linux --target-version "${EXILED_PRE}"
     fi
 else
     echo "Skipping Exiled installation."
@@ -239,16 +240,16 @@ if [ "${INSTALL_INTEGRATION}" == "true" ]; then
     if [ "${BOT_VERSION}" == "latest" ]; then
         echo Installing Discord Latest Integration Plugin...
         #Moves to plugin folder for plugin installation. 
-        cd .config/EXILED/Plugins
+        cd .config/EXILED/Plugins || echo "Bot Install Failed" && return
 
-        echo "Removing old Discord Integreation (if it exists)"
+        echo "Removing old Discord Integration (if it exists)"
         rm DiscordIntegration_Plugin.dll
         rm DiscordIntegration.dll
 
         echo "Grabbing plugin and dependencies."
         wget https://github.com/Exiled-Team/DiscordIntegration/releases/latest/download/Plugin.tar.gz
 
-        echo "Extacting..."
+        echo "Extracting..."
         tar xzvf Plugin.tar.gz
         rm Plugin.tar.gz
 
