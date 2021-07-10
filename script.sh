@@ -24,11 +24,17 @@ $(tput setaf 0)
 "
 
 # Download SteamCMD and Install
-cd /tmp || echo "$(tput setaf 1) FAILED TO MOUNT TO /TMP" && exit
+cd /tmp || {
+  echo "$(tput setaf 1) FAILED TO MOUNT TO /TMP"
+  exit
+  }
 mkdir -p /mnt/server/steamcmd
 curl -sSL -o steamcmd.tar.gz https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
 tar -xzvf steamcmd.tar.gz -C /mnt/server/steamcmd
-cd /mnt/server/steamcmd || echo "$(tput setaf 1) FAILED TO MOUNT TO /mnt/server/steamcmd" && exit
+cd /mnt/server/steamcmd || {
+  echo "$(tput setaf 1) FAILED TO MOUNT TO /mnt/server/steamcmd"
+  exit
+  }
 
 # SteamCMD fails otherwise for some reason, even running as root.
 # This is changed at the end of the install process anyways.
@@ -240,7 +246,10 @@ if [ "${INSTALL_INTEGRATION}" == "true" ]; then
     if [ "${BOT_VERSION}" == "latest" ]; then
         echo Installing Discord Latest Integration Plugin...
         #Moves to plugin folder for plugin installation. 
-        cd .config/EXILED/Plugins || echo "Bot Install Failed" && return
+        cd .config/EXILED/Plugins || {
+          echo "Bot Install Failed"
+          return
+          }
 
         echo "Removing old Discord Integration (if it exists)"
         rm DiscordIntegration_Plugin.dll
