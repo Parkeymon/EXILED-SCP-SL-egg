@@ -301,7 +301,5 @@ fi
 if [ "${INSTALL_BOT}" == "true" ]
 then
     echo "Dont forget to configure the discord bot in /home/container/config.yml"
-    echo "$(tput setaf 2)Installation Complete!$(tput sgr 0)"
-else
-    echo "$(tput setaf 2)Installation Complete!$(tput sgr 0)"
 fi
+echo "$(tput setaf 2)Installation Complete!$(tput sgr 0)"
