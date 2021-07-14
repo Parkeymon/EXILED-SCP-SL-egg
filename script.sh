@@ -48,14 +48,6 @@ else
 fi
 # Install SL with SteamCMD
 
-## set up 32 bit libraries
-mkdir -p /mnt/server/.steam/sdk32
-cp -v linux32/steamclient.so ../.steam/sdk32/steamclient.so
-
-## set up 64 bit libraries
-mkdir -p /mnt/server/.steam/sdk64
-cp -v linux64/steamclient.so ../.steam/sdk64/steamclient.so
-
 cd /mnt/server || {
   echo "$(tput setaf 1) FAILED TO MOUNT TO /mnt/server"
   exit
