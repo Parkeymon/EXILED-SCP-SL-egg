@@ -8,9 +8,8 @@ Features:
 - Beta tag support
 - EXILED
 - Select pre-release or release of EXILED
+- Specific EXILED version support
 - Discord integration bot and plugin
-- Selectable bot version
-- Multiadmin (Not recommended to use, doesnt play very nice with pterodactyl)
 - Localadmin 
 - Auto Admintools install 
 - Auto Common Utilities install.
