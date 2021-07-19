@@ -8,9 +8,8 @@ Features:
 - Beta tag support
 - EXILED
 - Select pre-release or release of EXILED
+- Specific EXILED version support
 - Discord integration bot and plugin
-- Selectable bot version
-- Multiadmin (Not recommended to use, doesnt play very nice with pterodactyl)
 - Localadmin 
 - Auto Admintools install 
 - Auto Common Utilities install.
@@ -19,3 +18,11 @@ Features:
 - FFmpeg (for use with [CommsHack](https://github.com/VirtualBrightPlayz/CommsHack))
 
 If you send a PR that only updates the [install script](https://github.com/Parkeymon/EXILED-SCP-SL-egg/blob/master/script.sh) don't send the exported egg just send the updated script.sh I will add it unless you need to make variable changes in the egg.
+
+
+
+## Custom Docker Images
+
+Server Image: https://github.com/Parkeymon/docker-scpsl
+
+Script Container: https://github.com/Parkeymon/scpsl-install-docker
