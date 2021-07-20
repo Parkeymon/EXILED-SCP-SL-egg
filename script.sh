@@ -93,30 +93,32 @@ fi
 
 if [ "${INSTALL_BOT}" == "true" ]; then
 
-  echo "$(tput setaf 4)Installing latest Discord Integration bot version.$(tput setaf 0)"
-  wget https://github.com/Exiled-Team/DiscordIntegration/releases/latest/download/DiscordIntegration.Bot.tar.gz
-  tar xzvf DiscordIntegration.Bot.tar.gz
-  rm DiscordIntegration.Bot.tar.gz
-  echo "Deleting config"
-  rm config.yml
-  echo "Replacing Config"
-  mv ./BotConfigTemp/config.yml ./
-  echo "Removing temporary directory"
-  rm -r BotConfigTemp
-  echo "$(tput setaf 4)Your configs have been saved!"
-
-  echo "$(tput setaf 4)Updating Packages"
-
-  yarn install
-
   if [ "${CONFIG_SAVER}" == "true" ]; then
     echo "$(tput setaf 4)Config Saver is $(tput setaf 2)ENABLED"
     echo "Making temporary directory"
     mkdir BotConfigTemp
     echo "Moving config."
     mv config.yml ./BotConfigTemp
-
   fi
+
+  echo "$(tput setaf 4)Installing latest Discord Integration bot version."
+  wget -q https://github.com/Exiled-Team/DiscordIntegration/releases/latest/download/DiscordIntegration.Bot.tar.gz
+  tar xzvf DiscordIntegration.Bot.tar.gz
+  rm DiscordIntegration.Bot.tar.gz
+
+  if [ "${CONFIG_SAVER}" == "true" ]; then
+    echo "Deleting config"
+    rm config.yml
+    echo "Replacing Config"
+    mv ./BotConfigTemp/config.yml ./
+    echo "Removing temporary directory"
+    rm -r BotConfigTemp
+    echo "$(tput setaf 4)Your configs have been saved!"
+  fi
+
+  echo "$(tput setaf 4)Updating Packages"
+  yarn install
+
 else
   echo "$(tput setaf 4)Skipping bot install...$(tput setaf 0)"
 fi
@@ -124,17 +126,17 @@ fi
 if [ "${INSTALL_EXILED}" == "true" ]; then
   echo "$(tput setaf 4)Downloading $(tput setaf 1)EXILED$(tput setaf 0).."
   mkdir .config/
-  echo "$(tput setaf 4)Downloading latest $(tput setaf 1)EXILED$(tput setaf 4) Installer$(tput setaf 0)"
+  echo "$(tput setaf 4)Downloading latest $(tput setaf 1)EXILED$(tput setaf 4) Installer"
   rm Exiled.Installer-Linux
-  wget https://github.com/galaxy119/EXILED/releases/latest/download/Exiled.Installer-Linux
+  wget -q https://github.com/galaxy119/EXILED/releases/latest/download/Exiled.Installer-Linux
   chmod +x ./Exiled.Installer-Linux
 
   if [ "${EXILED_PRE}" == "true" ]; then
-    echo "$(tput setaf 4)Installing $(tput setaf 1)EXILED (pre-release)$(tput setaf 0).."
+    echo "$(tput setaf 4)Installing $(tput setaf 1)EXILED (pre-release)..."
     ./Exiled.Installer-Linux --pre-releases
 
   elif [ "${EXILED_PRE}" == "false" ]; then
-    echo "$(tput setaf 4)Installing $(tput setaf 1)EXILED$(tput setaf 0).."
+    echo "$(tput setaf 4)Installing $(tput setaf 1)EXILED$(tput setaf 0)..."
     ./Exiled.Installer-Linux
 
   else
@@ -160,8 +162,8 @@ if [ "${INSTALL_INTEGRATION}" == "true" ]; then
   rm /mnt/server/.config/EXILED/Plugins/DiscordIntegration_Plugin.dll
   rm /mnt/server/.config/EXILED/Plugins/DiscordIntegration.dll
 
-  echo "Grabbing plugin and dependencies."
-  wget https://github.com/Exiled-Team/DiscordIntegration/releases/latest/download/Plugin.tar.gz -P /mnt/server/.config/EXILED/Plugins
+  echo "$(tput setaf 5)Grabbing plugin and dependencies."
+  wget -q https://github.com/Exiled-Team/DiscordIntegration/releases/latest/download/Plugin.tar.gz -P /mnt/server/.config/EXILED/Plugins
 
   echo "Extracting..."
   tar xzvf /mnt/server/.config/EXILED/Plugins/Plugin.tar.gz
@@ -174,8 +176,8 @@ fi
 if [ "${INSTALL_ADMINTOOLS}" == "true" ]; then
   echo "Removing existing Admin Tools version."
   rm .config/EXILED/Plugins/AdminTools.dll
-  echo "Installing latest Admin Tools"
-  wget https://github.com/Exiled-Team/AdminTools/releases/latest/download/AdminTools.dll -P /mnt/server/.config/EXILED/Plugins
+  echo "$(tput setaf 5)Installing latest Admin Tools"
+  wget -q https://github.com/Exiled-Team/AdminTools/releases/latest/download/AdminTools.dll -P /mnt/server/.config/EXILED/Plugins
 
 else
   echo "Skipping Admin Tools install."
@@ -184,8 +186,8 @@ fi
 if [ "${INSTALL_UTILITIES}" == "true" ]; then
   echo "Removing existing Common Utilities version."
   rm .config/EXILED/Plugins/Common_Utilities.dll
-  echo "Installing Common Utilities."
-  wget https://github.com/Exiled-Team/Common-Utils/releases/latest/download/Common_Utilities.dll -P /mnt/server/.config/EXILED/Plugins
+  echo "$(tput setaf 5)Installing Common Utilities."
+  wget -q https://github.com/Exiled-Team/Common-Utils/releases/latest/download/Common_Utilities.dll -P /mnt/server/.config/EXILED/Plugins
 else
   echo "Skipping Common Utilities Install"
 fi
@@ -193,8 +195,8 @@ fi
 if [ "${INSTALL_SCPSTATS}" == "true" ]; then
   echo "Removing existing SCPStats version."
   rm .config/EXILED/Plugins/SCPStats.dll
-  echo "Installing SCPStats"
-  wget https://github.com/SCPStats/Plugin/releases/latest/download/SCPStats.dll -P /mnt/server/.config/EXILED/Plugins
+  echo "$(tput setaf 5)Installing SCPStats"
+  wget -q https://github.com/SCPStats/Plugin/releases/latest/download/SCPStats.dll -P /mnt/server/.config/EXILED/Plugins
 else
   echo "Skipping SCPStats Install."
 fi
@@ -204,14 +206,15 @@ function pluginInstall() {
 
   curl --silent "$1" | jq . > plugin.json
 
-  echo "Installing $(jq -r .assets[0].name plugin.json) $(jq -r .tag_name plugin.json) by $(jq -r .author.login plugin.json)"
+  echo "$(tput setaf 5)Installing $(jq -r .assets[0].name plugin.json) $(jq -r .tag_name plugin.json) by $(jq -r .author.login plugin.json)"
 
   # For the evil people that put the version in their plugin name the old version will need to be manually deleted
   rm /mnt/server/.config/EXILED/Plugins/"$(jq -r .assets[0].name plugin.json)"
 
-  jq -r .assets[0].browser_download_url plugin.json
+  echo "$(jq -r .assets[0].browser_download_url plugin.json)
+  "
 
-  wget "$(jq -r .assets[0].browser_download_url plugin.json)" -P /mnt/server/.config/EXILED/Plugins
+  wget -q "$(jq -r .assets[0].browser_download_url plugin.json)" -P /mnt/server/.config/EXILED/Plugins
 
   rm plugin.json
 }
@@ -233,4 +236,4 @@ echo "$(tput setaf 2)Installation Complete!$(tput sgr 0)"
 
 ##TODO - using git to sync configs with github
 
-##TODO - Fix plugin install locations
+##TODO - Append plugin version to file name so they dont reinstall when they dont need to be?
