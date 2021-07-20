@@ -22,7 +22,7 @@ $(tput setaf 2)This installer was created by $(tput setaf 1)Parkeymon#0001
 "
 
 # Egg version checking, do not touch!
-currentVersion="2.1.0"
+currentVersion="2.1.1"
 latestVersion=$(curl --silent "https://api.github.com/repos/Parkeymon/EXILED-SCP-SL-egg/releases/latest" | jq -r .tag_name)
 
 if [ "${currentVersion}" == "${latestVersion}" ]; then
@@ -148,7 +148,7 @@ fi
 
 if [ "${REMOVE_UPDATER}" == "true" ]; then
   echo "Removing Exiled updater."
-  rm .config/EXILED/Plugins/Exiled.Updater.dll
+  rm /mnt/server/.config/EXILED/Plugins/Exiled.Updater.dll
 else
   echo "Skipping EXILED updater removal."
 fi
@@ -156,22 +156,16 @@ fi
 if [ "${INSTALL_INTEGRATION}" == "true" ]; then
   echo "Installing Latest Discord Integration Plugin..."
 
-  #Moves to plugin folder for plugin installation.
-  cd .config/EXILED/Plugins || {
-    echo "Bot Install Failed"
-    return
-  }
-
   echo "Removing old Discord Integration (if it exists)"
-  rm DiscordIntegration_Plugin.dll
-  rm DiscordIntegration.dll
+  rm /mnt/server/.config/EXILED/Plugins/DiscordIntegration_Plugin.dll
+  rm /mnt/server/.config/EXILED/Plugins/DiscordIntegration.dll
 
   echo "Grabbing plugin and dependencies."
-  wget https://github.com/Exiled-Team/DiscordIntegration/releases/latest/download/Plugin.tar.gz
+  wget https://github.com/Exiled-Team/DiscordIntegration/releases/latest/download/Plugin.tar.gz -P /mnt/server/.config/EXILED/Plugins
 
   echo "Extracting..."
-  tar xzvf Plugin.tar.gz
-  rm Plugin.tar.gz
+  tar xzvf /mnt/server/.config/EXILED/Plugins/Plugin.tar.gz
+  rm /mnt/server/.config/EXILED/Plugins/Plugin.tar.gz
 
 else
   echo "Skipping Discord integration plugin install"
@@ -181,7 +175,7 @@ if [ "${INSTALL_ADMINTOOLS}" == "true" ]; then
   echo "Removing existing Admin Tools version."
   rm .config/EXILED/Plugins/AdminTools.dll
   echo "Installing latest Admin Tools"
-  wget https://github.com/Exiled-Team/AdminTools/releases/latest/download/AdminTools.dll -P .config/EXILED/Plugins
+  wget https://github.com/Exiled-Team/AdminTools/releases/latest/download/AdminTools.dll -P /mnt/server/.config/EXILED/Plugins
 
 else
   echo "Skipping Admin Tools install."
@@ -191,7 +185,7 @@ if [ "${INSTALL_UTILITIES}" == "true" ]; then
   echo "Removing existing Common Utilities version."
   rm .config/EXILED/Plugins/Common_Utilities.dll
   echo "Installing Common Utilities."
-  wget https://github.com/Exiled-Team/Common-Utils/releases/latest/download/Common_Utilities.dll -P .config/EXILED/Plugins
+  wget https://github.com/Exiled-Team/Common-Utils/releases/latest/download/Common_Utilities.dll -P /mnt/server/.config/EXILED/Plugins
 else
   echo "Skipping Common Utilities Install"
 fi
@@ -200,7 +194,7 @@ if [ "${INSTALL_SCPSTATS}" == "true" ]; then
   echo "Removing existing SCPStats version."
   rm .config/EXILED/Plugins/SCPStats.dll
   echo "Installing SCPStats"
-  wget https://github.com/SCPStats/Plugin/releases/latest/download/SCPStats.dll -P .config/EXILED/Plugins
+  wget https://github.com/SCPStats/Plugin/releases/latest/download/SCPStats.dll -P /mnt/server/.config/EXILED/Plugins
 else
   echo "Skipping SCPStats Install."
 fi
@@ -213,19 +207,19 @@ function pluginInstall() {
   echo "Installing $(jq -r .assets[0].name plugin.json) $(jq -r .tag_name plugin.json) by $(jq -r .author.login plugin.json)"
 
   # For the evil people that put the version in their plugin name the old version will need to be manually deleted
-  rm .config/EXILED/Plugins/"$(jq -r .assets[0].name plugin.json)"
+  rm /mnt/server/.config/EXILED/Plugins/"$(jq -r .assets[0].name plugin.json)"
 
   jq -r .assets[0].browser_download_url plugin.json
 
-  wget "$(jq -r .assets[0].browser_download_url plugin.json)" -P .config/EXILED/Plugins
+  wget "$(jq -r .assets[0].browser_download_url plugin.json)" -P /mnt/server/.config/EXILED/Plugins
 
   rm plugin.json
 }
 
 if [ "${INSTALL_CUSTOM}" == "true" ]; then
-  touch .egg/customplugins.txt || echo "customplugins.txt already exists"
+  touch /mnt/server/.egg/customplugins.txt
 
-  grep -v '^ *#' <.egg/customplugins.txt | while IFS= read -r I; do
+  grep -v '^ *#' </mnt/server/.egg/customplugins.txt | while IFS= read -r I; do
     pluginInstall "${I}"
   done
 
