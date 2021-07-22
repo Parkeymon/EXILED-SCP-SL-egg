@@ -22,7 +22,7 @@ $(tput setaf 2)This installer was created by $(tput setaf 1)Parkeymon#0001
 "
 
 # Egg version checking, do not touch!
-currentVersion="2.1.1"
+currentVersion="2.1.3"
 latestVersion=$(curl --silent "https://api.github.com/repos/Parkeymon/EXILED-SCP-SL-egg/releases/latest" | jq -r .tag_name)
 
 if [ "${currentVersion}" == "${latestVersion}" ]; then
@@ -204,7 +204,18 @@ fi
 function pluginInstall() {
   # Caches the plugin to a json so only one request to Github is needed
 
-  curl --silent "$1" | jq . > plugin.json
+  curl --silent -u "${GITHUB_USERNAME}:${GITHUB_TOKEN}" "$1" | jq . > plugin.json
+
+  if [ "$(jq -r .assets[0].browser_download_url plugin.json)" == null ]; then
+    echo "
+    $(tput setaf 5)ERROR GETTING PLUGIN DOWNLOAD URL!
+
+    Inputted URL: $1
+
+    You likely inputted the incorrect URL or have been rate-limited ( https://takeb1nzyto.space/ )
+    "
+
+  fi
 
   echo "$(tput setaf 5)Installing $(jq -r .assets[0].name plugin.json) $(jq -r .tag_name plugin.json) by $(jq -r .author.login plugin.json)"
 
