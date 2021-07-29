@@ -36,8 +36,9 @@ https://api.github.com/repos/<PLUGIN-AUTHOR>/<REPO-NAME>/releases/latest
 https://api.github.com/repos/iopietro/BetterScp939/releases/latest
 ```
 
-###⚠️**WARNING**⚠️
-If you need to make more thank 60 GitHub requests in an hour you NEED to use authentication or else the installation could possibly fail leaving you with a failed install state!
+### ⚠️**WARNING**⚠️
+If you need to make more than
+ 60 GitHub requests in an hour you NEED to use authentication or else the installation could possibly fail leaving you with a failed install state!
 Each install/reinstall makes at least one request to check the egg version and one request per plugin that you add in so if you add 19 plugins and reinstall a few times within a short time frame it _will_ rate-limit you.
 
 ![Failed Install State](https://media.discordapp.net/attachments/867104159907840031/867106088767062027/unknown.png)
