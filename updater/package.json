@@ -4,12 +4,12 @@
   "description": "An automatic updater to update your SCP:SL server",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "author": "Parkeymon",
   "license": "MIT",
   "dependencies": {
     "node-fetch": "^2.6.1",
-    "steamapi": "^2.1.3"
+    "nodeactyl": "^3.1.0"
   }
 }
