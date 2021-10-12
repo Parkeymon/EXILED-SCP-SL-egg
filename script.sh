@@ -166,7 +166,7 @@ if [ "${INSTALL_INTEGRATION}" == "true" ]; then
   wget -q https://github.com/Exiled-Team/DiscordIntegration/releases/latest/download/Plugin.tar.gz -P /mnt/server/.config/EXILED/Plugins
 
   echo "Extracting..."
-  tar xzvf /mnt/server/.config/EXILED/Plugins/Plugin.tar.gz
+  tar xzvf /mnt/server/.config/EXILED/Plugins/Plugin.tar.gz -C /mnt/server/.config/EXILED/Plugins
   rm /mnt/server/.config/EXILED/Plugins/Plugin.tar.gz
 
 else
