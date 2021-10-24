@@ -19,8 +19,6 @@ Features:
 - Exiled updater auto-removal
 - FFmpeg (for use with [CommsHack](https://github.com/VirtualBrightPlayz/CommsHack))
 
-If you send a PR that only updates the [install script](https://github.com/Parkeymon/EXILED-SCP-SL-egg/blob/master/script.sh) don't send the exported egg just send the updated script.sh I will add it unless you need to make variable changes in the egg.
-
 ## Using the automatic plugin installer
 
 Located in the `.egg/` directory if you enabled "AUTO INSTALL CUSTOM PLUGINS?" there should a file called `customplugins.txt`.
