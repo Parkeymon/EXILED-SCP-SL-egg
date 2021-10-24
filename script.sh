@@ -13,7 +13,7 @@ $(tput setaf 1) ___                 __          __   __
 $(tput setaf 1)|   | ____   _______/  |______  |  | |  |   ___________ 
 $(tput setaf 1)|   |/    \ /  ___/\   __\__  \ |  | |  | _/ __ \_  __ |
 $(tput setaf 1)|   |   |  |\___ \  |  |  / __ \|  |_|  |_\  ___/|  | \/
-$(tput setaf 1)|___|___|__/______> |__| (______|____|____/\___  |__|       
+$(tput setaf 1)|___|___|__/______| |__| (______|____|____/\___  |__|
 $(tput setaf 0)
 "
 
@@ -22,7 +22,7 @@ $(tput setaf 2)This installer was created by $(tput setaf 1)Parkeymon#0001
 "
 
 # Egg version checking, do not touch!
-currentVersion="2.1.5"
+currentVersion="2.2.0"
 latestVersion=$(curl --silent "https://api.github.com/repos/Parkeymon/EXILED-SCP-SL-egg/releases/latest" | jq -r .tag_name)
 
 if [ "${currentVersion}" == "${latestVersion}" ]; then
@@ -80,7 +80,7 @@ mkdir .egg
 
 if [ "${INSTALL_BOT}" == "true" ]; then
   echo "#!/bin/bash
-    node discordIntegration.js > /dev/null &
+    node .egg/DIBot/discordIntegration.js > /dev/null &
     ./LocalAdmin \${SERVER_PORT}" >>start.sh
   echo "$(tput setaf 4)Finished configuring start.sh for LocalAdmin and Discord Integration.$(tput setaf 0)"
 
@@ -92,32 +92,37 @@ else
 fi
 
 if [ "${INSTALL_BOT}" == "true" ]; then
+  mkdir /mnt/server/.egg/DIBot
 
   if [ "${CONFIG_SAVER}" == "true" ]; then
     echo "$(tput setaf 4)Config Saver is $(tput setaf 2)ENABLED"
     echo "Making temporary directory"
-    mkdir BotConfigTemp
+    mkdir /mnt/server/.egg/BotConfigTemp
     echo "Moving config."
-    mv config.yml ./BotConfigTemp
+    mv /mnt/server/.egg/DIBot/config.yml /mnt/server/.egg/BotConfigTemp
   fi
 
   echo "$(tput setaf 4)Installing latest Discord Integration bot version."
   wget -q https://github.com/Exiled-Team/DiscordIntegration/releases/latest/download/DiscordIntegration.Bot.tar.gz
-  tar xzvf DiscordIntegration.Bot.tar.gz
+  tar xzvf DiscordIntegration.Bot.tar.gz -C /mnt/server/.egg/DIBot
   rm DiscordIntegration.Bot.tar.gz
+
+  echo "$(tput setaf 4)Patching Discord Integration bot..."
+  sed -i 's|./config.yml|.egg/DIBot/config.yml|g' /mnt/server/.egg/DIBot/discordIntegration.js
+  sed -i 's|./synced-roles.yml|.egg/DIBot/synced-roles.yml|g' /mnt/server/.egg/DIBot/discordIntegration.js
 
   if [ "${CONFIG_SAVER}" == "true" ]; then
     echo "Deleting config"
-    rm config.yml
+    rm /mnt/server/.egg/DIBot/config.yml
     echo "Replacing Config"
-    mv ./BotConfigTemp/config.yml ./
+    mv /mnt/server/.egg/BotConfigTemp/config.yml /mnt/server/.egg/DIBot
     echo "Removing temporary directory"
-    rm -r BotConfigTemp
+    rm -r /mnt/server/.egg/BotConfigTemp
     echo "$(tput setaf 4)Your configs have been saved!"
   fi
 
   echo "$(tput setaf 4)Updating Packages"
-  yarn install
+  yarn --cwd /mnt/server/.egg/DIBot install
 
 else
   echo "$(tput setaf 4)Skipping bot install...$(tput setaf 0)"
@@ -158,7 +163,7 @@ fi
 if [ "${INSTALL_INTEGRATION}" == "true" ]; then
   echo "Installing Latest Discord Integration Plugin..."
 
-  echo "Removing old Discord Integration (if it exists)"
+  echo "Removing old Discord Integration"
   rm /mnt/server/.config/EXILED/Plugins/DiscordIntegration_Plugin.dll
   rm /mnt/server/.config/EXILED/Plugins/DiscordIntegration.dll
 
@@ -240,7 +245,7 @@ if [ "${INSTALL_CUSTOM}" == "true" ]; then
 fi
 
 if [ "${INSTALL_BOT}" == "true" ]; then
-  echo "Dont forget to configure the discord bot in /home/container/config.yml"
+  echo "Dont forget to configure the discord bot in /home/container/.egg/DIBot/config.yml"
 fi
 
 echo "$(tput setaf 2)Installation Complete!$(tput sgr 0)"
