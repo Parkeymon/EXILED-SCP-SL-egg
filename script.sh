@@ -63,6 +63,7 @@ if [ "${BETA_TAG}" == "none" ]; then
   ./steamcmd.sh +login anonymous +force_install_dir /mnt/server +app_update "${SRCDS_APPID}" validate +quit
 else
   ./steamcmd.sh +login anonymous +force_install_dir /mnt/server +app_update "${SRCDS_APPID}" -beta "${BETA_TAG}" validate +quit
+fi
 
 # Install SL with SteamCMD
 cd /mnt/server || {
