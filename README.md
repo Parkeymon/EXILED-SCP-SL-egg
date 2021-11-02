@@ -1,5 +1,6 @@
 # EXILED-SCP-SL-egg
 [![wakatime](https://wakatime.com/badge/github/Parkeymon/EXILED-SCP-SL-egg.svg)](https://wakatime.com/badge/github/Parkeymon/EXILED-SCP-SL-egg)
+[![Trigger: Push action](https://github.com/Parkeymon/EXILED-SCP-SL-egg/actions/workflows/shellcheck.yml/badge.svg?branch=master)](https://github.com/Parkeymon/EXILED-SCP-SL-egg/actions/workflows/shellcheck.yml)
 
 A pterodactyl egg for SCP:SL that has [EXILED](https://github.com/Exiled-Team/EXILED) support.
 
