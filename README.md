@@ -55,6 +55,8 @@ This should also allow you to download from private repos (Although I haven't te
 
 ## Custom Docker Images
 
-Server Image: https://github.com/Parkeymon/docker-scpsl
+### Server Image
+[![Server Image](https://github.com/Parkeymon/docker-scpsl/actions/workflows/docker-image.yml/badge.svg?branch=master)](https://github.com/Parkeymon/docker-scpsl/actions/workflows/docker-image.yml)
 
-Script Container: https://github.com/Parkeymon/scpsl-install-docker
+### Script Container
+[![Script Container](https://github.com/Parkeymon/scpsl-install-docker/actions/workflows/docker-image.yml/badge.svg?branch=master)](https://github.com/Parkeymon/scpsl-install-docker/actions/workflows/docker-image.yml)
