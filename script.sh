@@ -227,7 +227,7 @@ function pluginInstall() {
   # For the evil people that put the version in their plugin name the old version will need to be manually deleted
   rm /mnt/server/.config/EXILED/Plugins/"$(jq -r .assets[0].name plugin.json)"
 
-  echo "$(jq -r .assets[0].browser_download_url plugin.json)"
+  jq -r .assets[0].browser_download_url plugin.json
 
   (cd /mnt/server/.config/EXILED/Plugins && curl -LJO -H "Authorization: token ${GITHUB_TOKEN}" "$(jq -r .assets[0].browser_download_url /mnt/server/plugin.json)")
 
