@@ -4,13 +4,13 @@
 # Server Files: /mnt/server
 
 echo "
-$(tput setaf 4)  ____________________________       ______________     
-$(tput setaf 4) /   _____/\_   ___ \______   \ /\  /   _____/|    |    
-$(tput setaf 4) \_____  \ /    \  \/|     ___/ \/  \_____  \ |    |    
-$(tput setaf 4) /        ||     \___|    |     /\  /        \|    |___ 
+$(tput setaf 4)  ____________________________       ______________
+$(tput setaf 4) /   _____/\_   ___ \______   \ /\  /   _____/|    |
+$(tput setaf 4) \_____  \ /    \  \/|     ___/ \/  \_____  \ |    |
+$(tput setaf 4) /        ||     \___|    |     /\  /        \|    |___
 $(tput setaf 4)/_________/ \________/____|     \/ /_________/|________|
-$(tput setaf 1) ___                 __          __   __                
-$(tput setaf 1)|   | ____   _______/  |______  |  | |  |   ___________ 
+$(tput setaf 1) ___                 __          __   __
+$(tput setaf 1)|   | ____   _______/  |______  |  | |  |   ___________
 $(tput setaf 1)|   |/    \ /  ___/\   __\__  \ |  | |  | _/ __ \_  __ |
 $(tput setaf 1)|   |   |  |\___ \  |  |  / __ \|  |_|  |_\  ___/|  | \/
 $(tput setaf 1)|___|___|__/______| |__| (______|____|____/\___  |__|
@@ -227,10 +227,9 @@ function pluginInstall() {
   # For the evil people that put the version in their plugin name the old version will need to be manually deleted
   rm /mnt/server/.config/EXILED/Plugins/"$(jq -r .assets[0].name plugin.json)"
 
-  echo "$(jq -r .assets[0].browser_download_url plugin.json)
-  "
+  echo "$(jq -r .assets[0].browser_download_url plugin.json)"
 
-  wget -q "$(jq -r .assets[0].browser_download_url plugin.json)" -P /mnt/server/.config/EXILED/Plugins
+  (cd /mnt/server/.config/EXILED/Plugins && curl -LJO -H "Authorization: token ${GITHUB_TOKEN}" "$(jq -r .assets[0].browser_download_url /mnt/server/plugin.json)")
 
   rm plugin.json
 }
