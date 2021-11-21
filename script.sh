@@ -22,7 +22,7 @@ $(tput setaf 2)This installer was created by $(tput setaf 1)Parkeymon#0001
 "
 
 # Egg version checking, do not touch!
-currentVersion="2.2.0"
+currentVersion="2.2.1"
 latestVersion=$(curl --silent "https://api.github.com/repos/Parkeymon/EXILED-SCP-SL-egg/releases/latest" | jq -r .tag_name)
 
 if [ "${currentVersion}" == "${latestVersion}" ]; then
@@ -252,7 +252,3 @@ if [ "${INSTALL_BOT}" == "true" ]; then
 fi
 
 echo "$(tput setaf 2)Installation Complete!$(tput sgr 0)"
-
-##TODO - using git to sync configs with github
-
-##TODO - Append plugin version to file name so they dont reinstall when they dont need to be?
