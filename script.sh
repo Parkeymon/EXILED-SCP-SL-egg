@@ -208,7 +208,6 @@ fi
 
 function pluginInstall() {
   # Caches the plugin to a json so only one request to Github is needed
-
   curl --silent -u "${GITHUB_USERNAME}:${GITHUB_TOKEN}" "$1" | jq . > plugin.json
 
   if [ "$(jq -r .assets[0].browser_download_url plugin.json)" == null ]; then
@@ -229,7 +228,12 @@ function pluginInstall() {
 
   jq -r .assets[0].browser_download_url plugin.json
 
-  (cd /mnt/server/.config/EXILED/Plugins && curl -LJO -H "Authorization: token ${GITHUB_TOKEN}" "$(jq -r .assets[0].browser_download_url /mnt/server/plugin.json)")
+  if [ "${GITHUB_TOKEN}" == "none" ]; then
+    wget -q "$(jq -r .assets[0].browser_download_url plugin.json)" -P /mnt/server/.config/EXILED/Plugins
+  else
+    url=$(jq -r .assets[0].url plugin.json | sed "s|https://|https://${GITHUB_TOKEN}:@|")
+    wget -q --auth-no-challenge --header='Accept:application/octet-stream' "$url" -O /mnt/server/.config/EXILED/Plugins/"$(jq -r .assets[0].name plugin.json)"
+  fi
 
   rm plugin.json
 }
