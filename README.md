@@ -16,7 +16,7 @@ Features:
 - Auto Admintools install
 - Auto Common Utilities install.
 - Auto SCPStats install.
-- Automatically install and update any plugin you put in.
+- Automatically install and update any plugin you put in. (Including private repositories)
 - Exiled updater auto-removal
 - FFmpeg (for use with [CommsHack](https://github.com/VirtualBrightPlayz/CommsHack))
 
@@ -50,9 +50,10 @@ In order to use authentication all you need to do is fill out your GitHub userna
 You can find a tutorial on how to get a token [here](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token).
 
 It is important to follow the [principle of least privilege](https://en.wikipedia.org/wiki/Principle_of_least_privilege) and only grant the permissions it needs. 
-In this case you don't need to add any scopes because we are just validating we are a user.
+In this case you don't need to add any scopes because we are just validating we are a user.|
 
-This should also allow you to download from private repos (Although I haven't tested it you may need additional scopes).
+If you would like to dowload from private repositories you need to give private repo scopes to your access token.
+![image](https://user-images.githubusercontent.com/68636315/142776718-e0107ced-b4c7-4170-9a49-11023aef646d.png) 
 
 ## Custom Docker Images
 
