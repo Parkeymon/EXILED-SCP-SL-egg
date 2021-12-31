@@ -62,7 +62,7 @@
             "default_value": "true",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|string|max:5"
+            "rules": "required|string|max:20"
         },
         {
             "name": "Remove Exiled Updater?",
