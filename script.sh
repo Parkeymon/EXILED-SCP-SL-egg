@@ -22,8 +22,10 @@ $(tput setaf 2)This installer was created by $(tput setaf 1)Parkeymon#0001
 "
 
 # Egg version checking, do not touch!
-currentVersion="2.2.1"
+currentVersion="2.3.0"
 latestVersion=$(curl --silent "https://api.github.com/repos/Parkeymon/EXILED-SCP-SL-egg/releases/latest" | jq -r .tag_name)
+# Default port is 9000 so 7777 + 1223 = 9000 and when you have more servers each port is one more.
+botPort=$((SERVER_PORT + 1223))
 
 if [ "${currentVersion}" == "${latestVersion}" ]; then
   echo "$(tput setaf 2)Installer is up to date"
@@ -60,9 +62,9 @@ chown -R root:root /mnt
 export HOME=/mnt/server
 
 if [ "${BETA_TAG}" == "none" ]; then
-  ./steamcmd.sh +login anonymous +force_install_dir /mnt/server +app_update "${SRCDS_APPID}" validate +quit
+  ./steamcmd.sh +force_install_dir /mnt/server +login anonymous +app_update "${SRCDS_APPID}" validate +quit
 else
-  ./steamcmd.sh +login anonymous +force_install_dir /mnt/server +app_update "${SRCDS_APPID}" -beta "${BETA_TAG}" validate +quit
+  ./steamcmd.sh +force_install_dir /mnt/server +login anonymous +app_update "${SRCDS_APPID}" -beta "${BETA_TAG}" validate +quit
 fi
 
 # Install SL with SteamCMD
@@ -71,22 +73,22 @@ cd /mnt/server || {
   exit
 }
 
-echo "$(tput setaf 4)Configuring start.sh$(tput setaf 0)"
-rm start.sh
-touch "start.sh"
-chmod +x ./start.sh
-
 mkdir .egg
+
+echo "$(tput setaf 4)Configuring start.sh$(tput setaf 0)"
+rm ./.egg/start.sh
+touch "./.egg/start.sh"
+chmod +x ./.egg/start.sh
 
 if [ "${INSTALL_BOT}" == "true" ]; then
   echo "#!/bin/bash
     node .egg/DIBot/discordIntegration.js > /dev/null &
-    ./LocalAdmin \${SERVER_PORT}" >>start.sh
+    ./LocalAdmin \${SERVER_PORT}" >>./.egg/start.sh
   echo "$(tput setaf 4)Finished configuring start.sh for LocalAdmin and Discord Integration.$(tput setaf 0)"
 
 else
   echo "#!/bin/bash
-    ./LocalAdmin \${SERVER_PORT}" >>start.sh
+    ./LocalAdmin \${SERVER_PORT}" >>./.egg/start.sh
   echo "$(tput setaf 4)Finished configuring start.sh for LocalAdmin.$(tput setaf 0)"
 
 fi
@@ -123,6 +125,33 @@ if [ "${INSTALL_BOT}" == "true" ]; then
 
   echo "$(tput setaf 4)Updating Packages"
   yarn --cwd /mnt/server/.egg/DIBot install
+
+  if [ -f "/mnt/server/.egg/DIBot/config.yml" ]; then
+      echo "Bot config exists, no need to create"
+  else
+    touch /mnt/server/.egg/DIBot/config.yml
+    curl -L https://raw.githubusercontent.com/Exiled-Team/DiscordIntegration/master/DiscordIntegration.Bot/config.yml >>/mnt/server/.egg/DIBot/config.yml
+    echo "Discord bot config did not exist and was generated."
+  fi
+
+  chmod 777 /mnt/server/.egg/DIBot/config.yml
+
+  yq -i ".tcp_server.port = \"${botPort}\"" /mnt/server/.egg/DIBot/config.yml
+  echo "$(tput setaf 5)Automatically setting bot port in bot configs as ${botPort}"
+
+  if [ "${BOT_TOKEN}" == "none" ]; then
+    echo "$(tput setaf 4)Bot token is not set! Skipping auto configuration.$(tput setaf 0)"
+  else
+    yq -i ".token = \"${BOT_TOKEN}\"" /mnt/server/.egg/DIBot/config.yml
+    echo "$(tput setaf 5)Automatically setting bot token in bot configs."
+  fi
+
+  if [ "${DISCORD_ID}" == "none" ]; then
+    echo "$(tput setaf 4)Discord server ID is not set! Skipping auto configuration.$(tput setaf 0)"
+  else
+    yq -i ".discord_server.id = \"${DISCORD_ID}\"" /mnt/server/.egg/DIBot/config.yml
+    echo "$(tput setaf 5)Automatically setting bot port in bot configs as ${DISCORD_ID}"
+  fi
 
 else
   echo "$(tput setaf 4)Skipping bot install...$(tput setaf 0)"
@@ -174,6 +203,18 @@ if [ "${INSTALL_INTEGRATION}" == "true" ]; then
   tar xzvf /mnt/server/.config/EXILED/Plugins/Plugin.tar.gz -C /mnt/server/.config/EXILED/Plugins
   rm /mnt/server/.config/EXILED/Plugins/Plugin.tar.gz
 
+  if [ -f "/mnt/server/.config/EXILED/Configs/${SERVER_PORT}-config.yml" ]; then
+        echo "Exiled config exists, no need to create"
+    else
+      mkdir /mnt/server/.config/EXILED/Configs
+      touch /mnt/server/.config/EXILED/Configs/"${SERVER_PORT}"-config.yml
+      echo "Exiled config did not exist and was generated."
+  fi
+
+  chmod 777 /mnt/server/.config/EXILED/Configs/"${SERVER_PORT}"-config.yml
+  yq -i ".discord_integration.bot.port = \"${botPort}\"" /mnt/server/.config/EXILED/Configs/"${SERVER_PORT}-config.yml"
+  echo "$(tput setaf 5)Automatically setting bot port in server configs as ${botPort}"
+
 else
   echo "Skipping Discord integration plugin install"
 fi
@@ -206,7 +247,7 @@ else
   echo "Skipping SCPStats Install."
 fi
 
-function pluginInstall() {
+function installPlugin() {
   # Caches the plugin to a json so only one request to Github is needed
   curl --silent -u "${GITHUB_USERNAME}:${GITHUB_TOKEN}" "$1" | jq . > plugin.json
 
@@ -242,13 +283,9 @@ if [ "${INSTALL_CUSTOM}" == "true" ]; then
   touch /mnt/server/.egg/customplugins.txt
 
   grep -v '^ *#' </mnt/server/.egg/customplugins.txt | while IFS= read -r I; do
-    pluginInstall "${I}"
+    installPlugin "${I}"
   done
 
-fi
-
-if [ "${INSTALL_BOT}" == "true" ]; then
-  echo "Dont forget to configure the discord bot in /home/container/.egg/DIBot/config.yml"
 fi
 
 echo "$(tput setaf 2)Installation Complete!$(tput sgr 0)"

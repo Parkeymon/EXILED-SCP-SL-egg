@@ -1,0 +1,15 @@
+{
+  "name": "updater",
+  "version": "1.0.0",
+  "description": "An automatic updater for SCPSL that uses pterodactyl",
+  "main": "updater.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Parkeymon",
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "nodeactyl": "^3.1.0"
+  }
+}
