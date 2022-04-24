@@ -1,4 +1,4 @@
-// THIS IS CURRENT UN-USED AND WORK IN PROGRESS IT IS NOT IMPORTANT!
+// THIS IS CURRENTLY UN-USED AND WORK IN PROGRESS IT IS NOT IMPORTANT!
 
 const fs = require("fs");
 const fetch = require("node-fetch");
