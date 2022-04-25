@@ -27,6 +27,9 @@ latestVersion=$(curl --silent "https://api.github.com/repos/Parkeymon/EXILED-SCP
 # Default port is 9000 so 7777 + 1223 = 9000 and when you have more servers each port is one more.
 botPort=$((SERVER_PORT + 1223))
 
+## TODO - Temporary for version 2.3.0 so people change their startup command.
+rm ./start.sh
+
 if [ "${currentVersion}" == "${latestVersion}" ]; then
   echo "$(tput setaf 2)Installer is up to date"
 else
@@ -287,5 +290,7 @@ if [ "${INSTALL_CUSTOM}" == "true" ]; then
   done
 
 fi
+
+echo "$(tput setaf 5)!!READ ME!! The start.sh file has been moved as of egg version 2.3.0 please change your startup command as your server may not start if it was pre-existing! See more info on GitHub releases."
 
 echo "$(tput setaf 2)Installation Complete!$(tput sgr 0)"
