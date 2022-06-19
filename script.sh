@@ -22,13 +22,10 @@ $(tput setaf 2)This installer was created by $(tput setaf 1)Parkeymon#0001
 "
 
 # Egg version checking, do not touch!
-currentVersion="2.3.0"
+currentVersion="2.4.0"
 latestVersion=$(curl --silent "https://api.github.com/repos/Parkeymon/EXILED-SCP-SL-egg/releases/latest" | jq -r .tag_name)
 # Default port is 9000 so 7777 + 1223 = 9000 and when you have more servers each port is one more.
 botPort=$((SERVER_PORT + 1223))
-
-## TODO - Temporary for version 2.3.0 so people change their startup command.
-rm ./start.sh
 
 if [ "${currentVersion}" == "${latestVersion}" ]; then
   echo "$(tput setaf 2)Installer is up to date"
@@ -85,7 +82,7 @@ chmod +x ./.egg/start.sh
 
 if [ "${INSTALL_BOT}" == "true" ]; then
   echo "#!/bin/bash
-    node .egg/DIBot/discordIntegration.js > /dev/null &
+    ./.egg/DIBot/DiscordIntegration.Bot > /dev/null &
     ./LocalAdmin \${SERVER_PORT}" >>./.egg/start.sh
   echo "$(tput setaf 4)Finished configuring start.sh for LocalAdmin and Discord Integration.$(tput setaf 0)"
 
@@ -99,60 +96,25 @@ fi
 if [ "${INSTALL_BOT}" == "true" ]; then
   mkdir /mnt/server/.egg/DIBot
 
-  if [ "${CONFIG_SAVER}" == "true" ]; then
-    echo "$(tput setaf 4)Config Saver is $(tput setaf 2)ENABLED"
-    echo "Making temporary directory"
-    mkdir /mnt/server/.egg/BotConfigTemp
-    echo "Moving config."
-    mv /mnt/server/.egg/DIBot/config.yml /mnt/server/.egg/BotConfigTemp
-  fi
-
   echo "$(tput setaf 4)Installing latest Discord Integration bot version."
-  wget -q https://github.com/Exiled-Team/DiscordIntegration/releases/latest/download/DiscordIntegration.Bot.tar.gz
-  tar xzvf DiscordIntegration.Bot.tar.gz -C /mnt/server/.egg/DIBot
-  rm DiscordIntegration.Bot.tar.gz
+  wget -q https://github.com/Exiled-Team/DiscordIntegration/releases/latest/download/DiscordIntegration.Bot -P /mnt/server/.egg/DIBot
 
-  echo "$(tput setaf 4)Patching Discord Integration bot..."
-  sed -i 's|./config.yml|.egg/DIBot/config.yml|g' /mnt/server/.egg/DIBot/discordIntegration.js
-  sed -i 's|./synced-roles.yml|.egg/DIBot/synced-roles.yml|g' /mnt/server/.egg/DIBot/discordIntegration.js
+  chmod +x /mnt/server/.egg/DIBot/DiscordIntegration.Bot
 
-  if [ "${CONFIG_SAVER}" == "true" ]; then
-    echo "Deleting config"
-    rm /mnt/server/.egg/DIBot/config.yml
-    echo "Replacing Config"
-    mv /mnt/server/.egg/BotConfigTemp/config.yml /mnt/server/.egg/DIBot
-    echo "Removing temporary directory"
-    rm -r /mnt/server/.egg/BotConfigTemp
-    echo "$(tput setaf 4)Your configs have been saved!"
-  fi
-
-  echo "$(tput setaf 4)Updating Packages"
-  yarn --cwd /mnt/server/.egg/DIBot install
-
-  if [ -f "/mnt/server/.egg/DIBot/config.yml" ]; then
-      echo "Bot config exists, no need to create"
-  else
-    touch /mnt/server/.egg/DIBot/config.yml
-    curl -L https://raw.githubusercontent.com/Exiled-Team/DiscordIntegration/master/DiscordIntegration.Bot/config.yml >>/mnt/server/.egg/DIBot/config.yml
-    echo "Discord bot config did not exist and was generated."
-  fi
-
-  chmod 777 /mnt/server/.egg/DIBot/config.yml
-
-  yq -i ".tcp_server.port = \"${botPort}\"" /mnt/server/.egg/DIBot/config.yml
+  yq -i ".TcpServers.1.Port = \"${botPort}\"" /mnt/server/DiscordIntegration-config.json
   echo "$(tput setaf 5)Automatically setting bot port in bot configs as ${botPort}"
 
   if [ "${BOT_TOKEN}" == "none" ]; then
     echo "$(tput setaf 4)Bot token is not set! Skipping auto configuration.$(tput setaf 0)"
   else
-    yq -i ".token = \"${BOT_TOKEN}\"" /mnt/server/.egg/DIBot/config.yml
+    yq -i ".BotTokens.1 = \"${BOT_TOKEN}\"" /mnt/server/DiscordIntegration-config.json
     echo "$(tput setaf 5)Automatically setting bot token in bot configs."
   fi
 
   if [ "${DISCORD_ID}" == "none" ]; then
     echo "$(tput setaf 4)Discord server ID is not set! Skipping auto configuration.$(tput setaf 0)"
   else
-    yq -i ".discord_server.id = \"${DISCORD_ID}\"" /mnt/server/.egg/DIBot/config.yml
+    yq -i ".DiscordServerIds.1 = \"${DISCORD_ID}\"" /mnt/server/DiscordIntegration-config.json
     echo "$(tput setaf 5)Automatically setting bot port in bot configs as ${DISCORD_ID}"
   fi
 
@@ -290,7 +252,5 @@ if [ "${INSTALL_CUSTOM}" == "true" ]; then
   done
 
 fi
-
-echo "$(tput setaf 5)!!READ ME!! The start.sh file has been moved as of egg version 2.3.0 please change your startup command as your server may not start if it was pre-existing! See more info on GitHub releases."
 
 echo "$(tput setaf 2)Installation Complete!$(tput sgr 0)"
