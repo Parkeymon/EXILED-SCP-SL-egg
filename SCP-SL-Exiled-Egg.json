@@ -4,7 +4,7 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2022-06-18T22:58:14-07:00",
+    "exported_at": "2022-06-18T23:02:23-07:00",
     "name": "EXILED SCP:SL Egg",
     "author": "pwolfe@stealthturtle.com",
     "description": "Egg for SCP: Secret Laboratory Dedicated Linux Server",
@@ -123,16 +123,6 @@
             "description": "Whether or not to install SCPStats.\r\nMore setup info here: https:\/\/github.com\/SCPStats\/Plugin\/wiki",
             "env_variable": "INSTALL_SCPSTATS",
             "default_value": "false",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|string|max:5",
-            "field_type": "text"
-        },
-        {
-            "name": "Save Discord Bot Configs?",
-            "description": "Saves your discord integration configs when you reinstall your server so they aren't deleted.",
-            "env_variable": "CONFIG_SAVER",
-            "default_value": "true",
             "user_viewable": true,
             "user_editable": true,
             "rules": "required|string|max:5",
