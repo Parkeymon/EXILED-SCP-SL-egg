@@ -10,7 +10,7 @@
     "description": "Egg for SCP: Secret Laboratory Dedicated Linux Server",
     "features": null,
     "docker_images": {
-        "quay.io\/parkeymon\/exiled-scpsl-image:latest": "quay.io\/parkeymon\/exiled-scpsl-image:latest"
+        "quay.io\/parkeymon\/exiled-scpsl-image:latest": "quay.io\/parkeymon\/exiled-scpsl-image:box64"
     },
     "file_denylist": [],
     "startup": ".\/.egg\/start.sh {{SERVER_PORT}}",

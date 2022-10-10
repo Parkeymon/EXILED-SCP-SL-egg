@@ -80,16 +80,19 @@ rm ./.egg/start.sh
 touch "./.egg/start.sh"
 chmod +x ./.egg/start.sh
 
+rm /mnt/server/MultiAdmin.exe
+wget -q https://github.com/ServerMod/MultiAdmin/releases/latest/download/MultiAdmin.exe -P /mnt/server
+
 if [ "${INSTALL_BOT}" == "true" ]; then
   echo "#!/bin/bash
     ./.egg/DIBot/DiscordIntegration.Bot > /dev/null &
-    ./LocalAdmin \${SERVER_PORT}" >>./.egg/start.sh
-  echo "$(tput setaf 4)Finished configuring start.sh for LocalAdmin and Discord Integration.$(tput setaf 0)"
+    box64 mono MultiAdmin.exe \${SERVER_PORT}" >>./.egg/start.sh
+  echo "$(tput setaf 4)Finished configuring start.sh for MultiAdmin and Discord Integration.$(tput setaf 0)"
 
 else
   echo "#!/bin/bash
-    ./LocalAdmin \${SERVER_PORT}" >>./.egg/start.sh
-  echo "$(tput setaf 4)Finished configuring start.sh for LocalAdmin.$(tput setaf 0)"
+    box64 mono MultiAdmin.exe \${SERVER_PORT}" >>./.egg/start.sh
+  echo "$(tput setaf 4)Finished configuring start.sh for MultiAdmin.$(tput setaf 0)"
 
 fi
 
