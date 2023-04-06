@@ -18,7 +18,7 @@ $(tput setaf 0)
 "
 
 echo "
-$(tput setaf 2)This installer was created by $(tput setaf 1)Parkeymon#0001
+$(tput setaf 2)This installer was created by $(tput setaf 1)Parkeymon#0001$(tput setaf 0) and maintained by EsserGaming.
 "
 
 # Egg version checking, do not touch!
@@ -71,8 +71,7 @@ cd /mnt/server || {
   exit
 }
 
-#Will remove when docker image updates
-apt install unzip
+#Start egg configuration
 mkdir .egg
 
 echo "$(tput setaf 4)Configuring start.sh$(tput setaf 0)"
