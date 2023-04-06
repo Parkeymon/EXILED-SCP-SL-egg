@@ -4,9 +4,9 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2023-03-30T23:08:41-05:00",
-    "name": "SCP:SL Egg",
-    "author": "upwordstudent@gmail.com",
+    "exported_at": "2023-04-06T16:02:16-05:00",
+    "name": "SCP:SL EXILED Egg",
+    "author": "pwolfe@stealthturtle.com",
     "description": "Egg for SCP: Secret Laboratory Dedicated Linux Server",
     "features": null,
     "docker_images": {
@@ -99,8 +99,8 @@
             "field_type": "text"
         },
         {
-            "name": "Auto install custom plugins?",
-            "description": "https:\/\/github.com\/Parkeymon\/EXILED-SCP-SL-egg#using-the-automatic-plugin-installer",
+            "name": "Install custom plugins?",
+            "description": "You can learn how to use this feature by looking at: https:\/\/github.com\/Parkeymon\/EXILED-SCP-SL-egg#using-the-automatic-plugin-installer",
             "env_variable": "INSTALL_CUSTOM",
             "default_value": "false",
             "user_viewable": true,
