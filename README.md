@@ -22,6 +22,8 @@ Features:
 When you enable the "Install Custom Plugins" variable in the startup tab and after installation go to the `.egg` file in your root directory and you will see a file called `customplugins.txt`
 You can put the Github link to any plugin in there, one per line but it must be in the correct format (see below) for it to work.
 
+Note: This will not work for NWApi plugins, though there is a way to automatically install/update plugins using Northwood's built in plugin manager which you can access by using the `p` command.
+
 ### Format
 ```
 https://api.github.com/repos/<PLUGIN-AUTHOR>/<REPO-NAME>/releases/latest
