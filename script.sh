@@ -87,7 +87,7 @@ if [ "${INSTALL_DIBOT}" == "true" ]; then
 
 elif [ "${INSTALL_SCPBOT}" == "true" ]; then
   echo "#!/bin/bash
-    ./.egg/SCPDiscordBot/SCPDiscordBot_Linux &
+    ./.egg/SCPDBot/SCPDiscordBot_Linux &
     ./LocalAdmin \${SERVER_PORT}" >>./.egg/start.sh
   echo "$(tput setaf 4)Finished configuring start.sh for LocalAdmin and SCP Discord.$(tput setaf 0)"
 
