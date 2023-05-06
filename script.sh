@@ -22,7 +22,7 @@ $(tput setaf 2)This installer was created by $(tput setaf 1)Parkeymon#0001$(tput
 "
 
 # Egg version checking, do not touch!
-currentVersion="2.4.0"
+currentVersion="2.5.0"
 latestVersion=$(curl --silent "https://api.github.com/repos/Parkeymon/EXILED-SCP-SL-egg/releases/latest" | jq -r .tag_name)
 
 if [ "${currentVersion}" == "${latestVersion}" ]; then
