@@ -128,12 +128,12 @@ if [ "${INSTALL_SCPBOT}" == "true" ]; then
   mkdir /mnt/server/.egg/SCPDBot
 
   echo "Removing old SCPDiscord Bot"
-  rm /mnt/server/.egg/SCPDBot/SCPDiscordBot_Linux
+  rm /mnt/server/.egg/SCPDBot/SCPDiscordBot_Linux_SC
 
   echo "$(tput setaf 4)Installing latest SCP Discord Bot."
-  wget -q https://github.com/KarlOfDuty/SCPDiscord/releases/latest/download/SCPDiscordBot_Linux -P /mnt/server/.egg/SCPDBot
+  wget -q https://github.com/KarlOfDuty/SCPDiscord/releases/latest/download/SCPDiscordBot_Linux_SC -P /mnt/server/.egg/SCPDBot
 
-  chmod +x /mnt/server/.egg/SCPDBot/SCPDiscordBot_Linux
+  chmod 755 /mnt/server/.egg/SCPDBot/SCPDiscordBot_Linux_SC
 
  #Install SCPDiscord Plugin
   echo "Installing Latest SCP Discord Plugin.."
