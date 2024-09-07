@@ -158,7 +158,7 @@ if [ "${INSTALL_EXILED}" == "true" ]; then
   mkdir .config/
   echo "$(tput setaf 4)Downloading latest $(tput setaf 1)EXILED$(tput setaf 4) Installer"
   rm Exiled.Installer-Linux
-  wget -q https://github.com/galaxy119/EXILED/releases/latest/download/Exiled.Installer-Linux
+  wget -q https://github.com/ExMod-Team/EXILED/releases/latest/download/Exiled.Installer-Linux
   chmod +x ./Exiled.Installer-Linux
 
   if [ "${EXILED_PRE}" == "true" ]; then
